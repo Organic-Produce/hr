@@ -1,0 +1,9 @@
+{{ object.first_name }}
+{{ object.last_name }}
+{{ object.email }}
+{{ object.username }}
+{{ object.get_pay_period_display }}
+{% for group in object.groups.all %}
+{{ group.name }}
+{% endfor %}
+{% if object.instances.0.strict_restriction %} SuperRestricted {% endif %}

@@ -1,0 +1,14 @@
+master: localhost
+file_client: local
+
+id: clock-internals.local
+
+file_roots:
+    base:
+        - /srv/salt/states
+        - /srv/salt/conf
+        - /srv/salt/src
+
+pillar_roots:
+    base:
+        - /srv/salt/pillar

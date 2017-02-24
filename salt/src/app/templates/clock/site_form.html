@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block extrah %}
+{{ form.media }}
+{% load floppyforms %}
+<meta name="robots" content="NONE,NOARCHIVE" />
+<script type="text/javascript">$(function () { $("[data-toggle='tooltip']").tooltip(); });</script>
+{% endblock %}
+
+{% load dicgetatt %}
+{% load compress %}
+{% load i18n %}
+
+{% block main %}
+
+    <h3> {% if previous %} {% url 'clock_detail_site' pk=previous as prev_url %}
+    <a href={{ prev_url|add:"?l="|add:list }}><span class="glyphicon glyphicon-chevron-left" data-placement="left" data-toggle="tooltip" data-original-title="{% trans "Previous" %} ({{ prev_site }})"></span></a>
+    {% endif %}
+    &emsp; &emsp; <span class="glyphicon glyphicon-list-alt"></span>{{ site.name }}&emsp; &emsp; 
+    {% if next %}{% url 'clock_detail_site' pk=next as next_url %}
+    <a href={{ next_url|add:"?l="|add:list }}><span class="glyphicon glyphicon-chevron-right" data-placement="right" data-toggle="tooltip" data-original-title="{% trans "Next" %} ({{ next_site }})"></span></a>
+    {% endif %}</h3>
+
+
+<hr>
+<div class="panels">
+<form action="{% url "clock_detail_site" pk=site.id %}?l={{ list }}" method="POST">
+  {% csrf_token %}
+    {{ form.as_p }}
+  <input id="save_site" type="submit" value={% trans "Save" %} />
+</form>
+</div>
+{% endblock %}

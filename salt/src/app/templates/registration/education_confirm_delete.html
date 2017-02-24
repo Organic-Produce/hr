@@ -1,0 +1,6 @@
+{% block main %}
+<form action="" method="post">{% csrf_token %}
+    <font color="white">Are you sure you want to delete "{{ object.number }}{{ object.place }}{{ object.document }}"?</font>
+    <input type="submit" value="Confirm" />
+</form>
+{% endblock %}

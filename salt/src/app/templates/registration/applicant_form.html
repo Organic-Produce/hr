@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% block extrah %}
+         <script src="/static/js/jquery-ui.js"></script>
+         <script src="/static/js/moment.js"></script>
+         <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.js"></script>
+         <script>
+            $(function() {
+                $( "#id_licence_expiration" ).datepicker({dateFormat: "yy-mm-dd"});
+            });
+			$(function () {
+				$('#id_birth_date').datetimepicker({ pickTime: false, format: 'YYYY-MM-DD', viewMode: 'years' });
+			});
+         </script>
+         {{ form.media.js }}
+         <script type="text/javascript">
+            window.myobj = {
+                markerOver: function() { this.openInfoWindow(); },
+                markerOut: function() { this.closeInfoWindow(); }
+            };
+         </script>
+{% endblock %}
+{% block main %}
+    {% if form.errors %}
+<div class="container">  
+<div class="col-sm-5">  
+<div class="alert alert-danger">  
+  <a class="close" data-dismiss="alert">×</a>  
+  <strong>Warning!</strong><hr />
+  {% if form.non_field_errors %}
+  {{ form.non_field_errors }}
+  {% else %}
+  Please correct {{ form.errors }} errors below
+    {% endif %}
+</div>  
+</div>  
+</div>
+    {% endif %}
+
+<div class="panel">
+    <p> <img src="/static/HRpower.png" style="max-width:50%" alt="HR Power - Streamlining HR" /> </p>
+        <h2><span class="glyphicon glyphicon-user"></span>Pending applicant</h2>
+{% if message %} {{ message }} {% else %}
+<form class="form-horizontal form-inline" action="{% url "register_detail_applicant" pk=applicant.id %}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+    <div class="well">
+        <label>Personal Data</label> 
+        <div class="row">
+            <div class="form-group">
+                <label for="id_last_name" class="col-xs-4 col-sm-5 control-label">{{ form.last_name.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-7">
+                    {{ form.last_name.errors  }}
+                    {{ form.last_name }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_first_name" class="col-xs-4 col-sm-5 control-label">{{ form.first_name.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.first_name.errors  }}
+                    {{ form.first_name }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_birth_date" class="col-xs-4 col-sm-5 control-label">{{ form.birth_date.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.birth_date.errors  }}
+                    {{ form.birth_date }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_marital_status" class="col-xs-4 col-sm-8 col-lg-6 control-label">{{ form.marital_status.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.marital_status.errors  }}
+                    {{ form.marital_status }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <label>Address</label> 
+        <div class="row">
+            <div class="form-group">
+                <label for="id_address" class="col-xs-4 col-sm-6 control-label">Street and number:</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.address.errors  }}
+                    {{ form.address }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_city" class="col-xs-4 col-sm-4 control-label">{{ form.city.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.city.errors  }}
+                    {{ form.city }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_state" class="col-xs-4 col-md-6 col-lg-5 control-label">{{ form.state.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.state.errors  }}
+                    {{ form.state }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_zip" class="col-xs-4 col-sm-5 control-label">{{ form.zip.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.zip.errors  }}
+                    {{ form.zip }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <div class="row">
+            <label>Telephone</label>
+        </div>
+                <iframe scrolling=NO width="90%" src="telephones/" name="telframe" frameborder="0">
+                </iframe>
+        <div class="row">
+            <div class="form-group">
+                <label for="id_emergency_contact" class="col-xs-4 col-sm-6 col-lg-6 control-label">{{ form.emergency_contact.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4 col-lg-5">
+                    {{ form.emergency_contact.errors  }}
+                    {{ form.emergency_contact }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <label>Job</label> 
+        <div class="row">
+            <div class="form-group">
+                <label for="id_social_security" class="col-xs-4 col-sm-6 col-lg-6 control-label">{{ form.social_security.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4 col-lg-5">
+                    {{ form.social_security.errors  }}
+                    {{ form.social_security }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_employment_type" class="col-xs-4 col-sm-9 control-label">{{ form.employment_type.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-2">
+                    {{ form.employment_type.errors  }}
+                    {{ form.employment_type }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_salary" class="col-xs-4 col-sm-3 col-md-6 col-lg-6 control-label">{{ form.salary.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-5">
+                    {{ form.salary.errors  }}
+                    {{ form.salary }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-4 control-label">Availability</label> 
+                <div class="col-xs-6">
+                <label for="id_weekdays" class="col-xs-6 control-label">{{ form.weekdays.label_tag }}</label> 
+                <div class="col-xs-4">
+                    {{ form.weekdays }}
+                </div>
+                <label for="id_weekends" class="col-xs-7 control-label">{{ form.weekends.label_tag }}</label> 
+                <div class="col-xs-2">
+                    {{ form.weekends }}
+                </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-4 control-label">Shift</label> 
+                <div class="col-xs-6">
+                <label for="id_first" class="col-xs-6 control-label">{{ form.first.label_tag }}</label> 
+                <div class="col-xs-4">
+                    {{ form.first }}
+                </div>
+                <label for="id_second" class="col-xs-7 control-label">{{ form.second.label_tag }}</label> 
+                <div class="col-xs-4">
+                    {{ form.second }}
+                </div>
+                <label for="id_third" class="col-xs-7 control-label">{{ form.third.label_tag }}</label> 
+                <div class="col-xs-4">
+                    {{ form.third }}
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label>Previous job</label> 
+        </div>
+                <iframe scrolling=NO width="90%" src="job/" name="telframe" frameborder="0">
+                </iframe>
+        <div class="row">
+            <label>Previous education</label> 
+        </div>
+                <iframe scrolling=NO width="90%" src="education/" name="telframe" frameborder="0">
+                </iframe>
+    </div>
+    <div class="well">
+        <label>Driving licence</label> 
+        <div class="row">
+            <div class="form-group">
+                <label for="id_licence_number" class="col-xs-4 col-sm-4 control-label">Number:</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.licence_number.errors  }}
+                    {{ form.licence_number }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_licence_state" class="col-xs-4 col-md-4 col-lg-4 control-label">State:</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.licence_state.errors  }}
+                    {{ form.licence_state }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_licence_expiration" class="col-xs-4 col-sm-6 control-label">Expiration date:</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.licence_expiration.errors  }}
+                    {{ form.licence_expiration }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <label>Other data</label>
+        <div class="row">
+            <div class="form-group">
+                <label for="id_criminal_record" class="col-xs-4 col-sm-6 col-lg-6 control-label">{{ form.criminal_record.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4">
+                    {{ form.criminal_record.errors  }}
+                    {{ form.criminal_record }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_criminal_record" class="col-xs-4 col-sm-4 col-lg-6 control-label">Note:</label> 
+                <div class="col-xs-4 col-sm-4 col-lg-5">
+                    {{ form.criminal_note.errors  }}
+                    {{ form.criminal_note }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_resume" class="col-xs-4 col-sm-4 col-lg-6 control-label">{{ form.resume.label_tag }}</label> 
+                <div class="col-xs-4 col-sm-4 col-lg-5">
+                    {{ form.resume.errors  }}
+                    {{ form.resume }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label>Extra files</label>
+        </div>
+                <iframe scrolling=NO width="90%" src="document/" name="telframe" frameborder="0">
+                </iframe>
+    </div>
+  <input id="save_applicant" type="submit" value="Save" />
+  <a data-toggle="modal" data-target="#sbmModal" class="btn btn-sm btn-default submit">Submit</a>
+  <a href="{% url "register_delete_applicant" pk=applicant.id %}" class="btn btn-sm btn-default delete">Delete</a>
+</form>
+        <div id="sbmModal" class="modal fade" tabindex="-1" role="dialog" data-color="green" aria-hidden="true">
+	        <div class="modal-body">
+                <div class="panel">
+                <h2><span class="glyphicon glyphicon-send"></span></h2>
+                <h4>After submission you will not bee able to modify your data.</h4>
+                <h4>By pressing "Continue" you confirm that you have saved your information in the system and you have verified that it is correct.</h4>
+                <form class="form-horizontal form-inline" action="{% url "register_detail_applicant" pk=applicant.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" value=2 name="status" />
+                <input id="id_submit" type="submit" value="Continue" name="submit" />
+                {% for field in form %}
+                {{ field.as_hidden }}
+                {% endfor %}
+                </form>
+                </div>
+            </div>
+	        <div class="modal-footer"> <button onclick="javascript:document.location.reload()" class="btn" data-dismiss="modal">Close</button> </div>
+        </div>
+{% endif %}
+</div>
+{% endblock %}

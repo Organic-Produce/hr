@@ -1,0 +1,30 @@
+upstream django {
+    server unix:///var/uwsgi/uwsgi.sock;
+}
+server {
+    listen 80; 
+    server_name *.ramonrc.com;
+    charset utf-8;
+
+    location /robots.txt {
+            return 200 "# RAMONRC.COM Robot's TXT By:Pablo Trinidad\nUser-agent: *\nDisallow: *\n";
+    }
+
+    location /media {
+        alias /home/shop/src/zapateria/media;
+    }
+
+    location /static {
+        alias /home/shop/src/zapateria/static;
+    } 
+
+    location / {
+        uwsgi_pass django;
+        include /etc/nginx/uwsgi_params;
+    }
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log info;
+
+
+}

@@ -1,0 +1,30 @@
+{% extends "skel.html" %}
+
+{% load dicgetatt %}
+
+{% block extrah %}
+         <script src="/static/js/jquery-ui.js"></script>
+         <script src="/static/js/moment.js"></script>
+         <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.js"></script>
+            <script>
+                $(function() {
+                    $( "#id_start_date" ).datepicker({dateFormat: "yy-mm-dd"});
+                });
+                $(function() {
+                    $( "#id_end_date" ).datepicker({dateFormat: "yy-mm-dd"});
+                });
+                $(function () {
+                    $('#id_start').datetimepicker({ pickDate: false, format: 'HH:mm:00', showMeridian: false });
+                });
+                $(function () {
+                    $('#id_end').datetimepicker({ pickDate: false, format: 'HH:mm:00', showMeridian: false });
+                });
+            </script>
+{% endblock %}
+
+{% load compress %}
+{% load floppyforms %}
+
+{% block main %}
+{% include "clock/form_entry.html" %}
+{% endblock %}

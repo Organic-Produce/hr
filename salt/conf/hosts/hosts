@@ -1,0 +1,17 @@
+127.0.0.1 localhost clock clock.local
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+{{ pillar['master_ip'] }}  clock.mew
+{% if 'clock' in grains['id'] %}
+{% for host, hostinfo in salt['mine.get']('*clock*', 'grains.items').items() %}
+{{ hostinfo['ip_interfaces']['eth0'][0] }} {{ host }}
+{% endfor %} {% elif 'shop' in grains['id'] %}
+{% for host, hostinfo in salt['mine.get']('*shop*', 'grains.items').items() %}
+{{ hostinfo['ip_interfaces']['eth0'][0] }} {{ host }}
+{% endfor %} {% endif %}

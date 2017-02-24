@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load dicgetatt %}
+{% load compress %}
+{% load tz %}
+
+{% block main %}
+    <h4><span class="glyphicon glyphicon-bell"></span>Alerts</h4>
+    <div class="list-group">
+    {% for profile in object_list %}
+        <div class="row"> 
+            <div class="col-md-8"><b> {{ profile.first_name }} {{ profile.last_name }} </b><small>({{ profile.email }})</small></div>
+            <div class="col-md-4">
+                <a class="btn btn-primary" href="#"><span class="glyphicon glyphicon-plus"></span><span>Lift writeup</span></a>
+            </div>
+        </div> 
+        <table class="table table-striped" cellspacing=0>
+        <thead><tr><th>Time</th><th>Text</th><th><small>Location Coordinates</small></th><th></th><th></th></tr></thead>
+        {% for alert in profile.alerts.hits.hits %}<tr>
+            <td>{{ alert|getatt:"_source"|getatt:"time"|stripdecimal|timezone:"America/Chicago" }}</td>
+            <td>{{ alert|getatt:"_source"|getatt:"text" }}</td>
+            <td><small>{{ alert|getatt:"_source"|getatt:"location_geo" }}</small></td>
+            <td><a class="btn btn-primary" href="#"><span>Entry details</span></a></td>
+            <td><a class="btn btn-primary" href="#"><span>Clear</span></a></td>
+            {% comment %}
+            <td><a class="btn btn-primary" href={{ alert|getatt:"_source"|getatt:"entry_id" }}><span>Entry details</span></a></td>
+            <td><a class="btn btn-primary" href={{ alert|getatt:"_id" }}><span>Clear</span></a></td>
+            {% endcomment %}
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+    </div>
+
+    {% for alert in profile.employers %}
+        {{ alert }}</br>
+    {% endfor %}
+{% endblock %}

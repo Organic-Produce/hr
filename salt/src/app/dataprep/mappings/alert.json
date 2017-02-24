@@ -1,0 +1,14 @@
+{
+    "mappings": {
+        "alert_entry": {
+            "properties": {
+                "user_id": { "type": "integer", "index": "not_analyzed" },
+                "entry_id":  { "type": "string", "index": "not_analyzed" },
+                "location_geo": { "type": "geo_point" },
+                "type": { "type": "integer", "index": "not_analyzed"  },
+                "text": { "type": "string" },
+                "time": { "type": "date" }
+            }
+        }
+    }
+}

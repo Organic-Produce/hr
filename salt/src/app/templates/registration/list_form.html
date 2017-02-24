@@ -1,0 +1,72 @@
+{% extends 'mskel.html' %}
+{% load dicgetatt %}
+{% block main %} {% if list %} {% for element in list %}
+            <div class="container-fluid"> {% if element.number %}
+                    <div class="col-sm-1 col-xs-2"> {{ element.number }} </div>
+                    <div class="col-sm-1 col-xs-2"> {{ element.get_type_display }} </div>
+                    {% elif element.place %}
+                    <div class="col-sm-1 col-xs-2"> {{ element.place }} </div>
+                    <div class="col-sm-1 col-xs-2"> {{ element.state }} </div>
+                    <div class="col-sm-2 col-xs-4"> {{ element.date_ended }}{{element.year }} </div>
+                    {% else %}
+                    <div class="col-sm-3 col-xs-4"> {{ element.document }} </div>
+                    <div class="col-sm-1 col-xs-2"> {{ element.description }} </div>
+                      {% endif %}
+                    <div class="col-sm-1 col-xs-2">
+                        <a data-toggle="modal" head="{{name|capfirst}}" data-target="#frmModal" href="{% url 'register_detail_'|add:name pk=element.id %}" class="btn btn-sm btn-default extra">Edit</a>
+                    </div>
+                    <div class="col-sm-1 col-xs-2">
+                        <a data-toggle="modal" head="{{name|capfirst}}" data-target="#frmModal" href="{% url 'register_delete_'|add:name pk=element.id %}" class="btn btn-sm btn-default extra">Delete</a>
+                    </div>
+            </div>
+                    {% endfor %}
+                    <div class="form-actions">
+                        <a class="btn btn-sm btn-info extra" head="{{name|capfirst}}" data-toggle="modal" href="{% url 'register_add_'|add:name ap=request.user.id %}" data-target="#frmModal" >Add new</a>
+                    </div>
+		    {% else %}
+<div class="well row">
+    <div class="col-sm-5">
+      <div class="panel panel-default">
+      <div class="panel-heading"><h4>{{ object.get_full_name }}</h4></div>
+<div class="panel-body">
+    {% for field in form %}
+		    {% if not field.name in '[password,last_login,is_superuser,groups,user_permissions,username,email,is_staff,is_active,pay_type,pay_period,overtime,geo_frecuency,geo_radius,desired_accuracy,stationary_radius,distance_filter,location_timeout,IOS_config,employees]' %}
+    {% if field.value %}
+		    {{ field.label_tag }} {{ field.value }} </br>
+		    {% endif %}
+		    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+{% for name in applicant %}
+<div class="panel panel-default">
+<div class="panel-heading"><h4>{{ name }}</h4></div>
+<div class="panel-body">
+{% for element in applicant|getatt:name %}
+            <div class="container-fluid"> {% if element.number %}
+                    <div class="col-sm-1 col-xs-2"> {{ element.number }} </div>
+                    <div class="col-sm-1 col-xs-2"> {{ element.get_type_display }} </div>
+                    {% elif element.place %}
+                    <div class="col-sm-1 col-xs-2"> {{ element.place }} </div>
+                    <div class="col-sm-1 col-xs-2"> {{ element.state }} </div>
+                    <div class="col-sm-2 col-xs-4"> {{ element.date_ended }}{{element.year }} </div>
+                    {% else %}
+                    <div class="col-sm-3 col-xs-4"> {{ element.document }} </div>
+                    <div class="col-sm-1 col-xs-2"> {{ element.description }} </div>
+                      {% endif %}
+            </div>
+{% endfor %}
+</div>
+    </div>
+{% endfor %}
+</div>
+
+
+        <div id="frmModal" class="modal fade" tabindex="-1" role="dialog" data-color="green" aria-hidden="true">
+	        <div class="modal-body"> <iframe width="100%" frameborder="0"></iframe></div>
+	        <div class="modal-footer"> <button onclick="javascript:document.location.reload()" class="btn" data-dismiss="modal">Close</button> </div>
+        </div>
+{% endblock %}

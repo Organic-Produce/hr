@@ -1,0 +1,41 @@
+{% load i18n %}
+
+<h4><span class="glyphicon glyphicon-list-alt"></span>{{ request.user.get_full_name }}</h4>
+<hr>
+<div class="panels">
+
+{% if 'li' in request.path %}
+<form action="{% url "clock_edit_entrie_list" pk=form.ID.value opt='li' %}" method="POST">
+{% elif form.ID.value %}
+<form action="{% url "clock_edit_entrie" pk=form.ID.value %}" method="POST">
+{% else %}
+<form action="{% url "clock_add_entrie" pk=employee.id opt='' %}" method="POST">
+{% endif %}
+  {% csrf_token %}
+    <p><b>{% if note %}{% trans "Note"%}{% else %}{% trans "Entry"%}{% endif %} {% trans "for"%}:</b> {{ employee }}</p>
+    {% if form.ID.value %}
+    <p><b>{% trans "Date"%}:</b> {{ date }}</p>
+    <hr>
+    {% elif note %}
+    <p><b>{% trans "Date"%}:</b> {{ form.start_date }} {{ form.start_date.errors }}</p>
+    {% else %}
+    <p><b>{% trans "Start date"%}:</b> {{ form.start_date }} {{ form.start_date.errors }}</p>
+    {% endif %}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    {% if note %}<p><b>{% trans "Note"%}:</b> {{ form.note }}</p> <input id="id_start" name="start" type="hidden" value="23:59:00" /><input id="id_end" name="end" type="hidden" value="23:59:00" />{% else %}
+    <p><b>{% trans "Start"%}:</b> {{ form.start }} {{ form.start.errors }}</p>
+    {% if not form.ID.value %}
+    <p><b>{% trans "End date"%}:</b> {{ form.end_date }} {{ form.end_date.errors }}</p>
+    {% endif %}
+    <p><b>{% trans "End"%}:</b> {{ form.end }} {{ form.end.errors }}</p>
+    {% endif %}
+    <hr>
+  <input id="save_entry" type="submit" value={% trans "Save"%} />
+    {% if form.ID.value or request.user.instances.0.iframes %}
+    {% else %}
+    <input type="submit" name="OID" value="{% trans "Save and add more"%}" id="id_OID">
+    {% endif %}
+</form>
+</div>

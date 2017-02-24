@@ -1,0 +1,30 @@
+{% load compress %}
+
+<!DOCTYPE text/html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap core CSS -->
+    {% compress css %}
+    <link href="/static/css/main.scss" type="text/scss" rel="stylesheet">
+    <link href="/static/css/jquery-ui.css" type="text/scss" rel="stylesheet">
+    <link href="/static/css/bootstrap-datetimepicker.min.css" type="text/scss" rel="stylesheet">
+    {% endcompress %}
+    {% block head %}
+         <script src="/static/js/jquery-1.11.1.min.js"></script>
+         <script src="/static/js/bootstrap.min.js"></script>
+    {% endblock %}
+    {% block extrah %}
+    {% endblock %}
+  </head>
+
+  <body>
+    <div class="container main">
+        {% block main %}
+        {% endblock %}
+    </div>
+  </body>
+</html>

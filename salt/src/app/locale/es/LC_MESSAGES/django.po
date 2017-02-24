@@ -1,0 +1,749 @@
+# SOMd DESCRIPTIVE TITLE.
+# Copyright (C) 2016
+# This file is distributed under the same license as the HRPower package.
+# Ramon Reyes <ramon@picassosweb.com> 2016
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-13 05:30+0000\n"
+"PO-Revision-Date: 2016-05-13 07:55+0000\n"
+"Last-Translator: Ramon Reyes <ramon@picassosweb.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app/settings.py:169
+msgid "English"
+msgstr "Inglés"
+
+#: app/settings.py:170
+msgid "Spanish"
+msgstr "Español"
+
+#: clock/forms.py:22
+msgid "Text"
+msgstr "Texto"
+
+#: clock/forms.py:23
+msgid "Full text"
+msgstr "Texto completo"
+
+#: clock/forms.py:27 templates/profiles/clock.html:18
+msgid "Password"
+msgstr "Contraseña"
+
+#: clock/forms.py:30 clock/forms.py:48 templates/clock/employee_form.html:152
+#: templates/clock/form_entry.html:28 templates/clock/list_entries.html:32
+#: templates/clock/list_entries.html:62
+#: templates/clock/skel_employee_form.html:53 templates/clock/webapp.html:113
+#: templates/clock/webapp.html.py:141 templates/clock/webapp.html:152
+msgid "Start"
+msgstr "Inicio"
+
+#: clock/forms.py:31 clock/forms.py:49 templates/clock/employee_form.html:152
+#: templates/clock/form_entry.html:32 templates/clock/list_entries.html:32
+#: templates/clock/list_entries.html:62
+#: templates/clock/skel_employee_form.html:53 templates/clock/webapp.html:114
+#: templates/clock/webapp.html.py:142 templates/clock/webapp.html:153
+msgid "End"
+msgstr "Fin"
+
+#: clock/forms.py:55 templates/clock/form_entry.html:15
+#: templates/clock/form_entry.html.py:27
+msgid "Note"
+msgstr "Nota"
+
+#: clock/models.py:60
+msgid "Name"
+msgstr "Nombre"
+
+#: clock/models.py:61
+msgid "City"
+msgstr "Ciudad"
+
+#: clock/models.py:62
+msgid "State"
+msgstr "Estado"
+
+#: clock/models.py:63
+msgid "ZIP"
+msgstr "CP"
+
+#: clock/models.py:64
+msgid "Address"
+msgstr "Dirección"
+
+#: clock/models.py:66 templates/clock/list_entries.html:62
+msgid "Location"
+msgstr "Hubicación"
+
+#: clock/views.py:761 clock/views.py:842
+msgid "Managers"
+msgstr "Supervisores"
+
+#: dataprep/views.py:93
+msgid "Clockin not allowed out of configured site, location"
+msgstr "No se permite la entrada fuera del sitio configurado, hubicación"
+
+#: dataprep/views.py:101
+msgid "Clockin not allowed without geo-location data"
+msgstr "Entrada no permitida sin datos de hubicación"
+
+#: dataprep/views.py:291
+msgid "Writeup count limit reached!"
+msgstr "¡Se alcanzó el límite de reportes!"
+
+#: dataprep/views.py:303
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: dataprep/views.py:333
+#, python-format
+msgid ""
+"User: %s, not assigned to an instance, please visit Human Resources office."
+msgstr ""
+"Usuario: %s, no está asignado a un instancia, favor de pasar a la oficina de "
+"personal"
+
+#: dataprep/views.py:424
+msgid ""
+"The system cannot find you within the configured fence, the issue will be "
+"reported"
+msgstr ""
+"El sistema no te detecta dentro del perímetro configurado, esto generará un "
+"reporte"
+
+#: dataprep/views.py:425
+msgid "Detected out of fence"
+msgstr "Detectado fuera del perímetro"
+
+#: dataprep/views.py:459
+msgid "Detected out of fence and clockout forced"
+msgstr "Detectado fuera del perimetro y se generó la salida"
+
+#: dataprep/views.py:461
+msgid ""
+"The system cannot find you within the configured fence, a clok-out has been "
+"foreced and the issue will be reported"
+msgstr ""
+"El sistrema no te detecta dentro del perímetro configurado, se generó la "
+"salida y esto generará un reporte"
+
+#: dataprep/views.py:465
+msgid ""
+"The system doesn't know where are you supposed to be, the issue will be "
+"reported"
+msgstr "El sitema no sabe donde debes estar, esto generará un reporte"
+
+#: profiles/models.py:7
+msgid "Full Time"
+msgstr "Tiempo completo"
+
+#: profiles/models.py:8
+msgid "Part Time"
+msgstr "Tiempo parcial"
+
+#: profiles/models.py:9
+msgid "Floater"
+msgstr "Flotante"
+
+#: profiles/models.py:13
+msgid "No reminder"
+msgstr "Sin recordatorio"
+
+#: profiles/models.py:14
+msgid "Every 2 hours"
+msgstr "Cada 2 horas"
+
+#: profiles/models.py:15
+msgid "Every 5 hours"
+msgstr "Cada 5 horas"
+
+#: profiles/models.py:19
+msgid "Hourly"
+msgstr "A destajo"
+
+#: profiles/models.py:20 profiles/models.py:132
+msgid "Salary"
+msgstr "Salario"
+
+#: profiles/models.py:24 templates/clock/list_employees.html:24
+msgid "Biweekly"
+msgstr "Quincenal"
+
+#: profiles/models.py:25 templates/clock/dashboard.html:84
+#: templates/clock/list_employees.html:24
+msgid "Monthly"
+msgstr "Mensual"
+
+#: profiles/models.py:29
+msgid "Exempt"
+msgstr "Excento"
+
+#: profiles/models.py:30
+msgid "Non exempt"
+msgstr "No excento"
+
+#: profiles/models.py:34
+msgid "Un-restrcited"
+msgstr "Sin restricción"
+
+#: profiles/models.py:35
+msgid "Restricted"
+msgstr "Restringido"
+
+#: profiles/models.py:39
+msgid "No Geofencing"
+msgstr "Sin Geo-encierro"
+
+#: profiles/models.py:40
+msgid "5 minutes"
+msgstr "5 minutos"
+
+#: profiles/models.py:41
+msgid "15 minutes"
+msgstr "15 minutos"
+
+#: profiles/models.py:42
+msgid "30 minutes"
+msgstr "30 minutos"
+
+#: profiles/models.py:128
+msgid "Employment type"
+msgstr "Tipo de empleo"
+
+#: profiles/models.py:128
+msgid "<small>Time rounding <b>OFF</b> for <i>Floater</i> only</small>"
+msgstr ""
+"<small>Redondeo de minutos <b>APAGADO</b> solo para <i>flotante</i></small>"
+
+#: profiles/models.py:129
+msgid "Rest reminder"
+msgstr "Recordatorio de descanso"
+
+#: profiles/models.py:130
+msgid "Pay period"
+msgstr "Periodo de pago"
+
+#: profiles/models.py:131
+msgid "Overtime"
+msgstr "Tiempo extra"
+
+#: profiles/models.py:133
+msgid "Geofencing frequency"
+msgstr "Frecuencia del encierro"
+
+#: profiles/models.py:134
+msgid "Geo location"
+msgstr "Hubicación geográfica"
+
+#: profiles/models.py:141 templates/base.html:65
+#: templates/clock/dashboard.html:41 templates/clock/list_employees.html:24
+msgid "Employees"
+msgstr "Empleados"
+
+#: templates/base.html:58
+msgid "Dashboard"
+msgstr "Panel"
+
+#: templates/base.html:73
+msgid "Applications"
+msgstr "Solicitudes"
+
+#: templates/base.html:78
+msgid "Clock"
+msgstr "Reloj"
+
+#: templates/base.html:78
+msgid "in"
+msgstr " Entra"
+
+#: templates/base.html:78
+msgid "out"
+msgstr " Sale"
+
+#: templates/base.html:81 templates/clock/dashboard.html:51
+#: templates/clock/employee_form.html:106
+#: templates/clock/skel_employee_form.html:148
+msgid "Messages"
+msgstr "Mensajes"
+
+#: templates/base.html:84
+msgid "History"
+msgstr "Historia"
+
+#: templates/base.html:95
+msgid "Logout"
+msgstr "Salir"
+
+#: templates/base.html:116
+msgid "Privacy policy"
+msgstr "Políticas de privacidad"
+
+#: templates/base.html:116
+msgid "terms and conditions"
+msgstr "términos y condiciones"
+
+#: templates/clock/dashboard.html:38
+msgid "Overview"
+msgstr "Resumen"
+
+#: templates/clock/dashboard.html:43 templates/clock/list_sites.html:7
+msgid "Sites"
+msgstr "Sitios"
+
+#: templates/clock/dashboard.html:55
+msgid "Declined entries"
+msgstr "Registros rechazados"
+
+#: templates/clock/dashboard.html:59
+msgid "Forced entries"
+msgstr "Registros cerrados"
+
+#: templates/clock/dashboard.html:63
+msgid "Reports"
+msgstr "Concentrado"
+
+#: templates/clock/dashboard.html:67
+msgid "Download"
+msgstr "Descarga"
+
+#: templates/clock/dashboard.html:72
+msgid "Including date"
+msgstr "Incluyendo"
+
+#: templates/clock/dashboard.html:82
+msgid "Pay Period"
+msgstr "Periodo de pago"
+
+#: templates/clock/dashboard.html:84
+msgid "Bi-weekly"
+msgstr "Quincenal"
+
+#: templates/clock/dashboard.html:89
+msgid "Format"
+msgstr "Formato"
+
+#: templates/clock/dashboard.html:91
+msgid "Daily"
+msgstr "Detallado"
+
+#: templates/clock/dashboard.html:91
+msgid "Summary"
+msgstr "Resumido"
+
+#: templates/clock/employee_add.html:9
+msgid "Create employee"
+msgstr "Crear empleado"
+
+#: templates/clock/employee_add.html:15 templates/clock/employee_form.html:60
+#: templates/clock/form_employee_manage.html:10
+#: templates/clock/form_entry.html:35 templates/clock/form_writeup.html:14
+#: templates/clock/site_form.html:29
+#: templates/clock/skel_employee_form.html:102
+msgid "Save"
+msgstr "Salvar"
+
+#: templates/clock/employee_form.html:14
+#: templates/clock/personal_reports.html:20 templates/clock/site_form.html:16
+msgid "Previous"
+msgstr "Anterior"
+
+#: templates/clock/employee_form.html:18 templates/clock/site_form.html:20
+msgid "Next"
+msgstr "Siguiente"
+
+#: templates/clock/employee_form.html:27
+msgid "Unmanage"
+msgstr "Des-supervisar"
+
+#: templates/clock/employee_form.html:40
+#: templates/clock/skel_employee_form.html:20
+msgid "Deactivate"
+msgstr "Desactivar"
+
+#: templates/clock/employee_form.html:42
+#: templates/clock/skel_employee_form.html:22
+msgid "Reactivate"
+msgstr "Reactivar"
+
+#: templates/clock/employee_form.html:47
+#: templates/clock/skel_employee_form.html:26
+msgid "Change Password"
+msgstr "Cambiar contraseña"
+
+#: templates/clock/employee_form.html:53
+#: templates/clock/skel_employee_form.html:95
+msgid "Update"
+msgstr "Actualizar a"
+
+#: templates/clock/employee_form.html:53
+#: templates/clock/skel_employee_form.html:95
+msgid "data"
+msgstr " ."
+
+#: templates/clock/employee_form.html:66
+#: templates/clock/skel_employee_form.html:108
+msgid "Writeups"
+msgstr "Reportes"
+
+#: templates/clock/employee_form.html:70
+#: templates/clock/skel_employee_form.html:112
+msgid "New WriteUp"
+msgstr "Nuevo reporte"
+
+#: templates/clock/employee_form.html:77 templates/clock/employee_form.html:95
+#: templates/clock/skel_employee_form.html:119
+#: templates/clock/skel_employee_form.html:137
+msgid "NOT Signed"
+msgstr "NO firmado"
+
+#: templates/clock/employee_form.html:78 templates/clock/employee_form.html:96
+#: templates/clock/skel_employee_form.html:120
+msgid "Signed"
+msgstr "Firmado"
+
+#: templates/clock/employee_form.html:87
+#: templates/clock/skel_employee_form.html:129
+msgid "Memorandums"
+msgstr "Memorandums"
+
+#: templates/clock/employee_form.html:114
+#: templates/clock/skel_employee_form.html:156 templates/clock/webapp.html:190
+msgid "Pending"
+msgstr "Pendinte"
+
+#: templates/clock/employee_form.html:115
+#: templates/clock/employee_form.html:158
+#: templates/clock/skel_employee_form.html:65
+#: templates/clock/skel_employee_form.html:157 templates/clock/webapp.html:145
+#: templates/clock/webapp.html.py:188
+msgid "Approved"
+msgstr "Aceptado"
+
+#: templates/clock/employee_form.html:116
+#: templates/clock/employee_form.html:160
+#: templates/clock/skel_employee_form.html:67
+#: templates/clock/skel_employee_form.html:158 templates/clock/webapp.html:155
+#: templates/clock/webapp.html.py:189
+msgid "Declined"
+msgstr "Rechazado"
+
+#: templates/clock/employee_form.html:127
+#: templates/clock/skel_employee_form.html:30
+msgid "Recorded entries"
+msgstr "Registros"
+
+#: templates/clock/employee_form.html:130
+#: templates/clock/skel_employee_form.html:33
+msgid "New Entry"
+msgstr "Nuevo registro"
+
+#: templates/clock/employee_form.html:132
+#: templates/clock/skel_employee_form.html:35
+msgid "Add note"
+msgstr "Añadir nota"
+
+#: templates/clock/employee_form.html:136 templates/clock/list_entries.html:17
+msgid "Refresh"
+msgstr "Recargar"
+
+#: templates/clock/employee_form.html:146
+#: templates/clock/employee_form.html:152 templates/clock/list_entries.html:32
+#: templates/clock/list_entries.html:56 templates/clock/list_entries.html:62
+#: templates/clock/skel_employee_form.html:46 templates/clock/webapp.html:143
+msgid "Worked"
+msgstr "Trabajado"
+
+#: templates/clock/employee_form.html:146 templates/clock/list_entries.html:56
+#: templates/clock/skel_employee_form.html:46
+msgid "regular"
+msgstr "regulares"
+
+#: templates/clock/employee_form.html:146 templates/clock/list_entries.html:56
+#: templates/clock/skel_employee_form.html:47
+msgid "and"
+msgstr "y"
+
+#: templates/clock/employee_form.html:146
+#: templates/clock/skel_employee_form.html:47
+msgid "extra"
+msgstr "extra"
+
+#: templates/clock/employee_form.html:152
+#: templates/clock/skel_employee_form.html:54
+msgid "Status"
+msgstr "Estado"
+
+#: templates/clock/employee_form.html:152
+#: templates/clock/skel_employee_form.html:55
+msgid "Location/Map"
+msgstr "Hubicación/Mapa"
+
+#: templates/clock/employee_form.html:159
+#: templates/clock/skel_employee_form.html:66
+msgid "To approve"
+msgstr "Por aceptar"
+
+#: templates/clock/employee_form.html:161 templates/clock/list_entries.html:93
+#: templates/clock/skel_employee_form.html:68
+msgid "Accounted"
+msgstr "Contabilizado"
+
+#: templates/clock/employee_form.html:162
+#: templates/clock/skel_employee_form.html:69
+msgid "Admin Forced"
+msgstr "Forzada por administrador"
+
+#: templates/clock/employee_form.html:163
+#: templates/clock/skel_employee_form.html:70
+msgid "System Forced"
+msgstr "Forzada por sistema"
+
+#: templates/clock/employee_form.html:167
+#: templates/clock/skel_employee_form.html:74
+msgid "Delete"
+msgstr "Borrar"
+
+#: templates/clock/employee_form.html:167
+#: templates/clock/skel_employee_form.html:74
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/clock/employee_form.html:169
+#: templates/clock/skel_employee_form.html:76
+msgid "Force Clockout"
+msgstr "Forzar salida"
+
+#: templates/clock/employee_form.html:174
+#: templates/clock/skel_employee_form.html:81
+msgid "Checkin"
+msgstr "Entrada"
+
+#: templates/clock/employee_form.html:177
+#: templates/clock/skel_employee_form.html:84
+msgid "Checkout"
+msgstr "Salida"
+
+#: templates/clock/form_employee_manage.html:3
+msgid "Updating"
+msgstr "Actualizando"
+
+#: templates/clock/form_employee_manage.html:3
+msgid "Manage"
+msgstr "Supervisar"
+
+#: templates/clock/form_entry.html:15
+msgid "Entry"
+msgstr "Registro"
+
+#: templates/clock/form_entry.html:15
+msgid "for"
+msgstr "para"
+
+#: templates/clock/form_entry.html:17 templates/clock/form_entry.html.py:20
+msgid "Date"
+msgstr "Fecha"
+
+#: templates/clock/form_entry.html:22
+msgid "Start date"
+msgstr "Fecha de entrada"
+
+#: templates/clock/form_entry.html:30
+msgid "End date"
+msgstr "Fecha de salida"
+
+#: templates/clock/form_entry.html:38
+msgid "Save and add more"
+msgstr "Salvar y agregar más"
+
+#: templates/clock/form_writeup.html:3
+msgid "All employees"
+msgstr "Todos los empleados"
+
+#: templates/clock/form_writeup.html:6
+msgid "Memorandum"
+msgstr "Memorandum"
+
+#: templates/clock/form_writeup.html:6
+msgid "WriteUp"
+msgstr "Reporte"
+
+#: templates/clock/list_employees.html:37
+msgid "Last name, first name, username, or email"
+msgstr "Apellido, nombre, usuario, o correo-e"
+
+#: templates/clock/list_employees.html:84
+#: templates/clock/list_employees.html:86
+msgid "Manage Employee"
+msgstr "Supervisar  empleados"
+
+#: templates/clock/list_employees.html:89
+msgid "Inactive Employees"
+msgstr "Empleados inactivos"
+
+#: templates/clock/list_employees.html:91
+msgid "Download Employee List"
+msgstr "Descargar lista de empleados"
+
+#: templates/clock/list_employees.html:94
+msgid "Add Employee"
+msgstr "Agregar empleado"
+
+#: templates/clock/list_employees.html:96
+msgid "New memorandum"
+msgstr "Nuevo memorandum"
+
+#: templates/clock/list_employees.html:127
+msgid "Last seen"
+msgstr "Visto por último"
+
+#: templates/clock/list_employees.html:130
+msgid "INACTIVE"
+msgstr "INACTIVO"
+
+#: templates/clock/list_employees.html:147
+#: templates/clock/list_entries.html:107
+#: templates/clock/skel_employee_form.html:171
+msgid "Close"
+msgstr "Cerrar"
+
+#: templates/clock/list_entries.html:11
+msgid "Pending messages"
+msgstr "Mensajes pendientes"
+
+#: templates/clock/list_entries.html:13
+msgid "Clock entries"
+msgstr "Registros"
+
+#: templates/clock/list_entries.html:28
+msgid "Approve"
+msgstr "Aceptar"
+
+#: templates/clock/list_entries.html:29
+msgid "Decline"
+msgstr "Rechazar"
+
+#: templates/clock/list_entries.html:32
+msgid "Site"
+msgstr "Sitio"
+
+#: templates/clock/list_entries.html:32
+msgid "Employee"
+msgstr "Empleado"
+
+#: templates/clock/list_entries.html:43 templates/clock/list_entries.html:46
+msgid "Edit times"
+msgstr "Editar hora"
+
+#: templates/clock/list_entries.html:83 templates/clock/list_entries.html:87
+#: templates/clock/webapp.html:123
+msgid "Approve?"
+msgstr "¿Aceptar?"
+
+#: templates/clock/list_entries.html:85 templates/clock/list_entries.html:89
+#: templates/clock/list_entries.html:91 templates/clock/webapp.html:134
+msgid "Decline?"
+msgstr "¿Rechazar?"
+
+#: templates/clock/list_sites.html:19
+msgid "Name, address, city, state, or zip code"
+msgstr "Nombre, dirección, cuidad, estado o CP"
+
+#: templates/clock/personal_reports.html:5
+msgid "Extended report"
+msgstr "Consolidado detallado"
+
+#: templates/clock/personal_reports.html:10
+msgid "Current"
+msgstr "Actual"
+
+#: templates/clock/personal_reports.html:15
+msgid "Last"
+msgstr "Ultimo"
+
+#: templates/clock/webapp.html:28
+msgid "Don't forget to take a rest every"
+msgstr "No olvides tomar un descanso cada"
+
+#: templates/clock/webapp.html:28
+msgid "hours"
+msgstr "horas"
+
+#: templates/clock/webapp.html:47
+msgid "Clockin"
+msgstr "Entrada"
+
+#: templates/clock/webapp.html:71
+msgid "Clockout"
+msgstr "Salida"
+
+#: templates/clock/webapp.html:93
+msgid "Continue"
+msgstr "Continuar"
+
+#: templates/clock/webapp.html:99
+msgid "You have clocked in on"
+msgstr "Se ha registrado la entrada"
+
+#: templates/clock/webapp.html:162
+msgid "You have the following"
+msgstr "Se tiene"
+
+#: templates/clock/webapp.html:162
+msgid "Notification"
+msgstr "Notificación"
+
+#: templates/clock/webapp.html:165
+msgid "To use the system you must sign it using your password"
+msgstr "Para continuar usando el sistema se debe firmar con la contraseña"
+
+#: templates/clock/webapp.html:167
+msgid "Write your"
+msgstr "Escribir el"
+
+#: templates/clock/webapp.html:167
+msgid "Message"
+msgstr "Mensaje"
+
+#: templates/clock/webapp.html:174
+msgid "Sign"
+msgstr "Firmar"
+
+#: templates/clock/webapp.html:181
+msgid "Recent Messages"
+msgstr "Mensajes recientes"
+
+#: templates/floppyforms/clearable_input.html:1
+msgid "Currently:"
+msgstr "Actualmente:"
+
+#: templates/floppyforms/clearable_input.html:4
+msgid "Clear"
+msgstr "Limpiar"
+
+#: templates/floppyforms/clearable_input.html:6
+msgid "Change:"
+msgstr "Cambiar:"
+
+#: templates/profiles/clock.html:4
+msgid "Your username and password didn't match. Please try again."
+msgstr "Usuario o contraseña incorrecto. Intentar nuevamente."
+
+#: templates/profiles/clock.html:7
+msgid "Login to your account"
+msgstr "Acceso a tu cuenta"
+
+#: templates/profiles/clock.html:12
+msgid "Username"
+msgstr "Usuario"
+
+#: templates/profiles/clock.html:29
+msgid "Login"
+msgstr "Acceso"

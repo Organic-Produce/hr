@@ -1,0 +1,173 @@
+{% extends "skel.html" %}
+
+{% load dicgetatt %}
+{% load compress %}
+{% load tz %}
+{% load i18n %}
+
+{% block main %}
+    <h3><span class="glyphicon glyphicon-user"></span>{{ profile.get_full_name }}</h3>
+
+    <div class="btn-group">
+    {% if profile.is_active %}
+    <form action={% url 'clock_manage_employee' opt='deactivate' %}  method="POST">
+    {% else %}
+    <form action={% url 'clock_manage_employee' opt='reactivate' %}  method="POST">
+    {% endif %}
+    {% csrf_token %}
+        <input type='hidden' multiple="multiple" id="id_employees" name="employees" value="{{ profile.pk }}" />
+    {% if profile.is_active %}
+        <input class="btn btn-danger btn-sm" type="submit" value={% trans "Deactivate" %} />
+    {% else %}
+        <input class="btn btn-success btn-sm" type="submit" value={% trans "Reactivate" %} />
+    {% endif %}
+    </form>
+    </div>
+    <a class="btn btn-primary btn-sm" data-toggle="modal" href="{% url 'clock_change_password' user_id=profile.pk %}" data-target="#pwdModal"><span>{% trans "Change Password" %}</span></a>
+    {% include "clock/personal_reports.html" %}
+    <div class="well row"> 
+      <div class="col-md-4 col-xs-4">
+	<h4><span class="glyphicon glyphicon-time"></span>{% trans "Recorded entries" %}</h4>
+      </div>
+      <div class="col-md-2">
+	<a class="btn btn-primary btn-sm" data-toggle="modal" href={% url 'clock_add_entrie' pk=profile.id opt=''%} data-target="#pwdModal"><span class="glyphicon glyphicon-tasks"></span><span>{% trans "New Entry" %}</span></a>
+    {% if request.user.instances.0.daily_notes %}
+	<a class="btn btn-primary btn-sm" data-toggle="modal" href={% url 'clock_add_entrie' pk=profile.id opt='note'%} data-target="#pwdModal"><span class="glyphicon glyphicon-pushpin"></span><span>{% trans "Add note" %}</span></a>
+    {% endif %}
+      </div>
+    </div>
+          {% for week in wentries %}	    
+    	<div class="panel-group" id="accordion">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">
+                <h4 class="panel-title">
+		        <a data-toggle="collapse" data-parent="#accordion" href="#{{week.1.toordinal}}"><small>
+		        {{ week.1 }} - 
+		        {{ week.0 }} &emsp; {% trans "Worked" %}: {{ week.2.0|floatformat:"2" }} {% trans "regular" %}{% if week.2.1 != 0 %} 
+		        {% trans "and" %} {{ week.2.1|floatformat:"2"}} {% trans "extra" %} {% endif %}hrs.
+		        </small></a>
+                </h4>
+	            </div>
+	            <div id="{{week.1.toordinal}}" class="panel-collapse collapse{% if forloop.first %} in{% endif %}">
+                    <div class="panel-body">
+                    <b><div class="row"><div class="col-md-2 col-xs-2">{% trans "Start" %}</div><div class="col-md-2 col-xs-2">{% trans "End" %}</div>
+                        <div class="col-md-2 col-xs-2">Worked</div><div class="col-md-2 col-xs-1">{% trans "Status" %}</div>
+                        <div class="col-md-2 col-xs-2">&emsp;</div><div class="col-md-2 col-xs-1">{% trans "Location/Map" %}</div></div></b>
+		{% for entry in week.3 %}<div class="row">
+		     {% if entry.note %}
+		                    <div class="col-md-2 col-xs-2">{{ entry.start }}</div>
+		                    <div class="col-md-6 col-xs-5"><small><b>{{ entry|getatt:"_source"|getatt:"note" }}</b></small></div>
+                            <div class="col-md-2 col-xs-2"><a class="btn btn-danger btn-sm" href="{% url "clock_delete_entrie" opt='delete' pk=entry|getatt:"_id" index=entry|getatt:"_index" %}">Delete</a></div>{% else %}
+		                    <div class="col-md-2 col-xs-2">{{ entry|getatt:"_source"|getatt:"start"|stripdecimal|timezone:"America/Chicago" }}</div>
+		                    <div class="col-md-2 col-xs-2">{{ entry|getatt:"_source"|getatt:"end"|stripdecimal|timezone:"America/Chicago" }}</div>
+		                    <div class="col-md-2 col-xs-2"><small>{{ entry.delta }}</small></div>
+                            <div class="col-md-2 col-xs-1"><small>
+			 {% if entry|getatt:"_source"|getatt:"status" == 1 %}{% trans "Approved" %}
+			 {% elif entry|getatt:"_source"|getatt:"status" == 2 %}{% trans "To approve" %}
+			 {% elif entry|getatt:"_source"|getatt:"status" == 3 %}{% trans "Declined" %}
+			 {% elif entry|getatt:"_source"|getatt:"status" == 4 %}{% trans "Accounted" %}
+			 {% elif entry|getatt:"_source"|getatt:"status" == 6 %}{% trans "Admin Forced" %}
+			 {% elif entry|getatt:"_source"|getatt:"status" == 7 %}{% trans "System Forced" %}
+			 {% endif %}
+                            </small></div>
+                     {% if entry|getatt:"_source"|getatt:"status" != 0 %}
+                     <div class="col-md-2 col-xs-2"><a class="btn btn-danger btn-sm" href="{% url "clock_delete_entrie" opt='delete' pk=entry|getatt:"_id" index=entry|getatt:"_index" %}">{% trans "Delete" %}</a><a class="btn btn-warning btn-sm kw-button" data-toggle="modal" href="{% url "clock_edit_entrie" pk=entry|getatt:"_id" %}" data-target="#pwdModal">{% trans "Edit" %}</a></div>
+                     {% else %} 
+                     <div class="col-md-2 col-xs-2"><a class="btn btn-danger btn-sm" href="{% url "clock_delete_entrie" opt='force' pk=entry|getatt:"_id" index=entry|getatt:"_index" %}"><small>{% trans "Force Clockout" %}</small></a></div>
+                     {% endif %}
+                     <div class="col-md-2 col-xs-1">
+                      {% if entry|getatt:"_source"|getatt:"site_name" and entry|getatt:"_source"|getatt:"site_name" != 'Unknown' %}{{ entry|getatt:"_source"|getatt:"site_name" }}{% else %}
+                       {% if entry|getatt:"_source"|getatt:"location_geo" %}
+                       <a href="https://maps.google.com/?q={{ entry|getatt:"_source"|getatt:"location_geo" }}" target="_blank">{% trans "Checkin" %}</a>
+                       {% endif %}
+                       {% if entry|getatt:"_source"|getatt:"checkout_geo" %}
+                       <a href="https://maps.google.com/?q={{ entry|getatt:"_source"|getatt:"checkout_geo" }}" target="_blank">{% trans "Checkout" %}</a>
+                       {% endif %}
+                      {% endif %}
+                        </div>{% endif %}
+		            </div>{% endfor %}
+                    </div>
+                </div>
+            </div>
+	{% endfor %}
+</div>
+    <div class="well row"> <div class="col-md-4">
+    <h4><span class="glyphicon glyphicon-edit"></span>{% trans "Update" %} <em>{{ profile.get_full_name }}</em> {% trans "data" %}</h4>
+    </div>
+
+    <div class="row"></div>
+    <form action="{{ action }}"  method="POST">
+    {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value={% trans "Save" %} />
+    </form>
+    </div>
+  <hr>
+
+    <div class="well row"> <div class="col-md-4 col-xs-4">
+    <h4><span class="glyphicon glyphicon-comment "></span>{% trans "Writeups" %}</h4>
+    </div>
+    <div class="col-md-1 col-xs-1"><span class="badge"> {{ writeups.total }}</span></div>
+    <div class="col-md-4 col-xs-5">
+    <a class="btn btn-primary btn-sm" data-toggle="modal" href={% url 'clock_edit_writeup' pk=profile.id opt='' %} data-target="#pwdModal"><span class="glyphicon glyphicon-pencil"></span><span>{% trans "New WriteUp" %}</span></a>
+    </div>
+    <div class="row"></div>
+    {% for entry in writeups.hits %}
+    <div class="row">
+    <div class="col-md-2 col-xs-4"> {{ entry|getatt:"_source"|getatt:"time"|stripdecimal|timezone:"America/Chicago" }}</div>
+    <div class="col-md-2 col-xs-3">
+    {% if entry|getatt:"_source"|getatt:"type" == 0 %}{% trans "NOT Signed" %}
+    {% elif entry|getatt:"_source"|getatt:"type" == 6 %}{% trans "Signed" %}
+    {% endif %}
+    </div>
+    <div class="col-md-4 col-xs-4"> {{ entry|getatt:"_source"|getatt:"text" }} </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% if request.user.instances.0.memos %}
+    <div class="well row"> <div class="col-md-4 col-xs-4">
+    <h4><span class="glyphicon glyphicon-comment "></span>{% trans "Memorandums" %}</h4>
+    </div>
+    <div class="col-md-1 col-xs-1"><span class="badge"> {{ memos.total }}</span></div>
+    <div class="row"></div>
+    {% for entry in memos.hits %}
+    <div class="row">
+    <div class="col-md-2 col-xs-4"> {{ entry|getatt:"_source"|getatt:"time"|stripdecimal|timezone:"America/Chicago" }}</div>
+    <div class="col-md-2 col-xs-3">
+    {% if entry|getatt:"_source"|getatt:"type" == 10 %}{% trans "NOT Signed" %}
+    {% elif entry|getatt:"_source"|getatt:"type" == 11 %}{% trans "Signed" %}
+    {% endif %}
+    </div>
+    <div class="col-md-4 col-xs-4"> {{ entry|getatt:"_source"|getatt:"text" }} </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    {% if request.user.instances.0.manager_messages %}
+    <div class="well row"> <div class="col-md-4 col-xs-4">
+    <h4><span class="glyphicon glyphicon-comment "></span>{% trans "Messages" %}</h4>
+    </div>
+    <div class="col-md-1 col-xs-1"><span class="badge"> {{ mesages.total }}</span></div>
+    <div class="row"></div>
+    {% for message in mesages.hits %}
+    <div class="row">
+    <div class="col-md-2 col-xs-4"> {{ message|getatt:"_source"|getatt:"time"|stripdecimal|timezone:"America/Chicago" }}</div>
+    <div class="col-md-2 col-xs-3">
+    {% if message|getatt:"_source"|getatt:"type" == 9 %}{% trans "Pending" %}
+    {% elif message|getatt:"_source"|getatt:"type" == 8 %}{% trans "Approved" %}
+    {% elif message|getatt:"_source"|getatt:"type" == 7 %}{% trans "Declined" %}
+    {% endif %}
+    </div>
+    <div class="col-md-4 col-xs-4"> {{ message|getatt:"_source"|getatt:"text" }} </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+        </div>
+
+        <div id="pwdModal" class="modal fade" tabindex="-1" role="dialog">
+	        <div class="modal-header"> <button type="button" class="close" data-dismiss="modal">×</button> </div>
+	        <div class="modal-content"> </div>
+	        <div class="modal-footer"> <button class="btn" data-dismiss="modal">{% trans "Close" %}</button> </div>
+        </div>
+{% endblock %}

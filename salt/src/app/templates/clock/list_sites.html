@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load compress %}
+{% load dicgetatt %}
+{% load i18n %}
+
+{% block main %}
+<h4><span class="glyphicon glyphicon-list-alt"></span>{% trans "Sites" %}</h4>
+<hr>
+<div class="panel panel-default">
+    <div class="panel-heading text-right">
+        <div class="row">
+
+            <div class="col-sm-6">
+                <form action="." method="GET">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                    <input class="form-control" placeholder="{% trans "Name, address, city, state, or zip code" %}" type="text" name="q">
+                </div>
+                </form>
+            </div>
+
+            <div class="col-xs-6 col-sm-3">
+                {% if page.has_previous %}
+                <span class="btn-group">
+                    <a href="?page=1" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                </span>
+                {% endif %}
+                <small class="badge">{{ page.number }} / {{ page.paginator.num_pages }}</small>
+                {% if page.has_next %}
+                <span class="btn-group">
+                    <a href="?page={{ page.next_page_number }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                </span>
+                {% endif %}
+            </div>
+
+            {% comment %}
+            <div class="col-xs-6 col-sm-3 text-right">
+                <a class="btn btn-primary" href="/__plumbing__/clock/site/add/"><span class="glyphicon glyphicon-plus"></span><span>{% trans "Add Site" %}</span></a>
+            </div>}
+            {% endcomment %}
+
+        </div>
+    </div>
+</div>
+<div class="list-group">    
+    {% for site in page.object_list %}
+    {% url 'clock_detail_site' pk=site.pk as url %}
+      {% if not forloop.first or not forloop.last %}
+      {% with list=page.object_list|getpklist item=forloop.counter|stringformat:"s" %}
+        <a class="list-group-item" href={{ url|add:"?l="|add:list|add:"&i="|add:item }}>
+      {% endwith %}
+      {% else %}
+        <a class="list-group-item" href = "{{ url }}" >
+      {% endif %}
+            <h4 class="list-group-item-heading">{{ site.name }}</h4>
+            <p>{{ site.address }}, {{ site.state }}, {{ site.zip }}</p>
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}

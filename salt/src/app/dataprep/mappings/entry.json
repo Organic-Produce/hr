@@ -1,0 +1,20 @@
+{
+    "mappings": {
+        "clock_entry": {
+            "properties": {
+                "user_id": { "type": "integer", "index": "not_analyzed" },
+                "location_id":  { "type": "integer", "index": "not_analyzed" },
+                "site_name": { "type": "string" }, 
+                "location_geo": { "type": "geo_point" }, 
+                "checkout_geo": { "type": "geo_point" }, 
+                "status": { "type": "integer" },
+                "start": { "type": "date" },
+                "end": { "type": "date" },
+                "worked": { "type": "date" },
+                "time_approved": { "type": "date", "index": "not_analyzed" },
+                "note": { "type": "string" },
+                "extra_income": { "type": "float", "index": "not_analyzed" }
+            }
+        }
+    }
+}

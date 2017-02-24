@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load compress %}
+
+{% block main %}
+<h3><span class="glyphicon glyphicon-user"></span>  {{ affiliate }}</h3>
+<div class="containder">
+<div class="col-sm-12">
+<div class="alert alert-success">
+<h4><i>{{ client.first_name }} {{ client.last_name }}</i></h4>
+</div>
+</div>
+</div>
+{% if finished == 1 %}
+<ul>
+<li>Charges:{{ charges|floatformat:2 }}</li>
+<li><b>Comission:</b> {{ comission|floatformat:2 }}</li>
+<li>Worked: {{ worked }}</li>
+<li><b>Waited:</b> {{ waited }}</li>
+</ul>
+{% else %}
+<li><b>No charges</b></li>
+{% endif %}
+{% endblock %}

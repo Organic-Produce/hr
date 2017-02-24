@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load dicgetatt %}
+{% load tz %}
+{% load i18n %}
+
+{% block main %}
+  {% if status.status == 3 or status.status == 2 %}
+{% if location_geo == None %}
+<script type="text/javascript">
+navigator.geolocation.getCurrentPosition(function(location) {
+  var latlon = location.coords.latitude + "," + location.coords.longitude ;
+  function Redirect() {
+window.location="./?location_geo="+latlon;
+            }
+  Redirect();
+});
+</script>
+{% endif %}
+  {% endif %}
+<h4><span class="glyphicon glyphicon-dashboard"></span>{{ request.user.get_full_name }}</h4>
+<hr>
+<div class="well_row">
+
+  {% if rest_reminder %}
+    <h5>
+        <small>{% trans "Don't forget to take a rest every" %} {% widthratio request.user.pay_type 60 1 %} {% trans "hours" %}</small>
+    </h5>
+  {% endif %}
+
+  <p>
+  <span class="glyphicon glyphicon-list-alt"></span>
+  {% if status.status == 2 or status.status == 5 %}
+    {% if location_geo == None and status.site_name and status.status != 5 %}... {% endif %}<small>{{ status.site_name }}</small>
+  {% else %}
+    {% if location_geo == None and status.data.site_name and status.status == 3 %}... {% endif %}<small>{{ status.data.site_name }}</small>
+  {% endif %}
+  </p>
+  {% if status.status == 3 %}
+    <div class="list-group"> <center>
+    <form class="list-group-item" action="{{action}}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="location_id" value="{{ status.data.location_id }}" />
+        <input type="hidden" name="site_name" value="{{ status.data.site_name }}" />
+        <input type="hidden" id="location_geo" name="location_geo" />
+        <input class="btn-group btn-group-justified btn-lg btn-success" type="submit" value={% trans "Clockin" %} />
+    </form>
+    </center>
+    </div>
+    <script type="text/javascript">
+    var doc = document.getElementById("location_geo");
+    if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else { alert('no geolocation');}
+    function showPosition(position) {
+        doc.setAttribute("value", position.coords.latitude + "," + position.coords.longitude);	
+        doc.value = position.coords.latitude + "," + position.coords.longitude;
+        doc.innerHTML = position.coords.latitude + "," + position.coords.longitude;
+        if (/Firefox/(navigator.appCodeName)) {alert('Browser accuracy: '+position.coords.accuracy);}
+    }
+    </script>
+  {% elif status.status == 2 %}
+    <div class="list-group"><center>
+    <form class="list-group-item" action="{{action}}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="validation" value="{{ status.status }}" />
+        <input type="hidden" name="ID" value="{{ status.data }}" />
+        <input type="hidden" name="site_name" value="{{ status.site_name }}" />
+        <input type="hidden" id="location_geo" name="location_geo" />
+        <input class="btn-group btn-group-justified btn-lg btn-danger" type="submit" value={% trans "Clockout" %} />
+    </form>
+    </center>
+    </div>
+    <script type="text/javascript">
+    var doc = document.getElementById("location_geo");
+    if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else { alert('no geolocation');}
+    function showPosition(position) {
+        doc.setAttribute("value", position.coords.latitude + "," + position.coords.longitude);	
+        doc.value = position.coords.latitude + "," + position.coords.longitude;
+        doc.innerHTML = position.coords.latitude + "," + position.coords.longitude;
+        if (/Firefox[\/\s](\d+\.\d+)./.test(navigator.appCodeName)) {alert('Browser accuracy: '+position.coords.accuracy);}
+    }
+    </script>
+  {% elif status.status == 9 %}
+    <div class="list-group">
+        <h4>{{ status.data }}</h4>
+        <p><center>
+        <div class="row">
+            {% url 'webapp_dashboard' as url %}
+            <a class="btn btn-large btn-primary" href={{ url }}><span>{% trans "Continue" %}</span></a>
+        </div>
+        </center></p>
+    </div>
+  {% elif status.status == 10 %}
+    <div class="list-group">
+        {% trans "You have clocked in on" %}: {{ status.data.start|timezone:"America/Chicago" }}
+        {% comment %}
+        <p><center>
+        <div class="row">
+            {% url 'webapp_dashboard' as url %}
+            <a class="btn btn-large btn-primary" href={{ url }}><span>{% trans "Continue" %}</span></a>
+        </div>
+        </center></p>
+        {% endcomment %}
+    </div>
+  {% elif status.status == 11 %}
+    <div class="col-sm-5">
+    <div class="list-group">
+        <p class="list-group-item" >{% trans "Start" %}: {{ status.data.start|stripdecimal|timezone:"America/Chicago" }}</p>
+        <p class="list-group-item" >{% trans "End" %}: {{ status.data.end|timezone:"America/Chicago" }}</p>
+        <form action="{{action}}" method="POST">
+        <p><center>
+            {% csrf_token %}
+            <input type="hidden" name="ID" value="{{ status.data.ID }}" />
+            <input type="hidden" name="site_name" value="{{ status.data.site_name }}" />
+            <input type="hidden" name="start" value="{{ status.data.start  }}" />
+            <input type="hidden" name="end" value="{{ status.data.end }}" />
+            <input type="hidden" name="worked" value="{{ status.data.worked }}" />
+            <input class="btn btn-lg btn-success btn-primary kw-button" type="submit" value={% trans "Approve?" %} />
+        </form></center></p><p>
+        <p><center>
+        <form action="{{action}}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="unvalidate" value=True >
+            <input type="hidden" name="ID" value="{{ status.data.ID }}" />
+            <input type="hidden" name="site_name" value="{{ status.data.site_name }}" />
+            <input type="hidden" name="start" value="{{ status.data.start  }}" />
+            <input type="hidden" name="end" value="{{ status.data.end }}" />
+            <input type="hidden" name="validation" value="{{ status.status }}" />
+            <input class="btn btn-lg btn-danger btn-primary kw-button" type="submit" value={% trans "Decline?" %} />
+        </form></center></p>
+    </div>
+    </div>
+  {% elif status.status == 12 %}
+    <div class="col-sm-5">
+    <div class="list-group">
+        <p class="list-group-item" >{% trans "Start" %}: {{ status.data.start|stripdecimal|timezone:"America/Chicago" }}</p>
+        <p class="list-group-item" >{% trans "End" %}: {{ status.data.end }}</p>
+        <p class="list-group-item" >{% trans "Worked" %}: {{ status.data.worked }}</p>
+        <p><center>
+        <large>{% trans "Approved" %}</large>
+        </center></p>
+    </div>
+    </div>
+  {% elif status.status == 13 %}
+    <div class="col-sm-5">
+    <div class="list-group">
+        <p class="list-group-item" >{% trans "Start" %}: {{ status.data.start|stripdecimal|timezone:"America/Chicago" }}</p>
+        <p class="list-group-item" >{% trans "End" %}: {{ status.data.end }}</p>
+        <p><center>
+        <large>{% trans "Declined" %}</large>
+        </center></p>
+    </div>
+    </div>
+  {% else %}
+        {% if status.status == 1 %}
+          {% if status.writeup %}
+            <h5>{% trans "You have the following" %} <span class="text-danger">{% trans "Notification" %}</span></h5>
+            <blockquote><center>{{ status.data.0 }}</center></blockquote>
+            <hr>
+            <p>{% trans "To use the system you must sign it using your password" %}</p>
+          {% else %}
+            <h5>{% trans "Write your" %} <span class="text-danger">{% trans "Message" %}</span></h5>
+          {% endif %}
+            <form action="{{ action }}" method="POST">
+            {% csrf_token %}
+            {{ form.as_table }}
+            <input type="hidden" name="site_name" value="{{ request.user.sites.first.name }}" />
+          {% if status.writeup %}
+            <input id="sign_alert" type="submit" value={% trans "Sign" %}/>
+            </form>
+          {% else %}
+            <input id="send_message" type="submit" value="Send request" />
+            </form>
+            {% if request.user.instances.0.manager_messages and messages.total != 0%}
+               <div class="well row"> <div class="col-md-4 col-xs-4">
+               <h4><span class="glyphicon glyphicon-comment "></span>{% trans "Recent Messages" %}</h4>
+               </div>
+               <div class="row"></div>
+               {% for entry in messages.hits %}
+               <div class="row">
+               <div class="col-md-2 col-xs-4"> {{ entry|getatt:"_source"|getatt:"time"|stripdecimal|timezone:"America/Chicago" }}</div>
+               <div class="col-md-2 col-xs-3">
+               {% if entry|getatt:"_source"|getatt:"type" == 8 %}{% trans "Approved" %}
+               {% elif entry|getatt:"_source"|getatt:"type" == 7 %}{% trans "Declined" %}
+               {% elif entry|getatt:"_source"|getatt:"type" == 9 %}{% trans "Pending" %}
+               {% endif %}
+               </div>
+               <div class="col-md-4 col-xs-4"> {{ entry|getatt:"_source"|getatt:"text" }} </div>
+               </div>
+               {% endfor %}
+               </div>
+            {% endif %}
+          {% endif %}
+        {% else %}
+            {{ status.data }}
+        {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

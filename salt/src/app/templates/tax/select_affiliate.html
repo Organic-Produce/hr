@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load dicgetatt %}
+{% load i18n %}
+{% load tz %}
+
+{% block main %}
+<h3><span class="glyphicon glyphicon-user"></span>	{{ client.first_name }} {{ client.last_name }}</h3>
+{% if form.errors %}
+{{ form }}
+<h4> {% trans "You must select an Affiliate" %}</h4>
+<button onclick="goBack()">Go Back</button>
+<script>
+function goBack() {
+	window.history.back();
+}
+</script>
+{% else %}
+{% if affiliate %}
+{% trans "You previously selected to meet" %} {{ affiliate }}
+{% endif %}
+<form class="form-horizontal login" method="post" action="{% url 'tax_queuein' %}">
+{% if pending %}
+{% trans "and you have a pending issue, started" %} {{ pending.start|stripdecimal|timezone:"America/Chicago" }}, 
+{% trans "if this is correct please provide"%}:
+<input id="id_affiliate" name="affiliate" type="hidden" value="{{ client.employer }}" />
+            <div class="form-group">
+                <label for="id_social_security" class="col-sm-2 control-label"><span class="glyphicon glyphicon-barcode"></span>{% trans "SSN" %}:</label>
+                <div class="col-sm-8">
+                    <input class="form-control" id="id_social_security" name="social_security" placeholder="Last 4-digits of your SSN" type="text" />
+                </div>
+            </div>
+{% else %}
+<h4> {% trans "Please SELECT the Affiliate you are coming to meet" %}</h4>
+{% for affiliate in affiliates %}
+<li><label for="id_affiliate"><input id="id_affiliate" name="affiliate" type="radio" value="{{ affiliate.id|cut:"profiles.applicant." }}" /> {{ affiliate.first_name }} {{ affiliate.last_name }}</label></li>
+{% endfor %}
+<li><label for="id_affiliate"><input id="id_affiliate" name="affiliate" type="radio" value="0" /> {% trans "I have not decided yet" %}</label></li>
+{% endif %}
+<hr>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					{% csrf_token %}
+					<button class="btn btn-default btn-lg btn-success" type="submit" value={% trans "sign-in" %} >
+						<span class="glyphicon glyphicon-log-in"></span>
+						<span>{% trans "Sign In" %}</span>
+					</button>
+				</div>
+			</div>
+{% endif %}
+<input id="id_client_id" name="client_id" type="hidden" value="{{ client_id }}" />
+</form>
+{% if pending %}
+{% trans "else provide you social security number from the beginig" %}
+<button class="btn btn-default btn-lg btn-danger" type="submit" value={% trans "go-back" %} onclick="goBack()">
+  <span class="glyphicon glyphicon-log-out"></span>
+  <span>{% trans "Go back" %}</span>
+</button>
+<script>
+function goBack() {
+	window.history.back();
+}
+</script>
+{% endif %}
+{% endblock %}

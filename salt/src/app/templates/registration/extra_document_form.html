@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/css/bootstrap-datetimepicker.min.css" type="text/scss" rel="stylesheet">
+         <script src="/static/js/jquery-1.11.1.min.js"></script>
+         <script src="/static/js/jquery-ui.js"></script>
+         <script src="/static/js/moment.js"></script>
+         <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.js"></script>
+         <script type="text/javascript">
+			$(function () {
+				$('#id_date_ended').datetimepicker({ pickTime: false, format: 'YYYY-MM-DD', viewMode: 'years' });
+			});
+         </script>
+         {{ form.media.js }}
+</head><body>
+<font color="white"> {{ form.errors }} </font>
+<form class="form-horizontal" action="{{ action }}" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+    <font color="white"> {{ form.as_table }} </font>
+  <input type="submit" value="Save" />
+</form>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load i18n %}
+
+{% block main %}
+    <h3><span class="glyphicon glyphicon-user"></span>{% trans "New expected client" %}</h4>
+
+    <div class="well-row">
+<form action="{{ action }}"  method="POST">
+  {% csrf_token %}
+    {{ form.as_p }}
+  <input type="submit" value={% trans "Save" %} />
+</form>
+</div>
+{% endblock %}

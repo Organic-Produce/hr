@@ -1,0 +1,13 @@
+curl -v -H "Content-Type: application/json" -XGET 'http://localhost:8080/api/user/status/2/19.2909504,-99.1631411'
+
+curl -v -H "Content-Type: application/json" -XPUT 'http://localhost:8080/api/entry/clockin/' -d \
+              '{"user_id": 2, "location_id": 2}'
+
+curl -v -H "Content-Type: application/json" -XGET 'http://localhost:8080/api/user/status/2/'
+
+#curl -v -H "Content-Type: application/json" -XPUT 'http://localhost:8080/api/entry/clockout/' -d \
+#              '{"ID": "vU8M2HKuTy6tzJP7T0_LiQ", "location_geo": "19.2909504,-99.1631411"}'
+
+#curl -v -H "Content-Type: application/json" -XPUT 'http://localhost:8080/api/entry/validate/' -d \
+#              '{"ID": "vU8M2HKuTy6tzJP7T0_LiQ", "week": "2014-21" }'
+

@@ -1,0 +1,28 @@
+- Download Vagrant.
+- Download VirtualBox.
+- Add this line: 
+    
+    172.16.81.150 clock.local
+
+  to your /etc/hosts file.
+
+- Run,
+
+    vagrant box add clock https://s3-us-west-2.amazonaws.com/clockwork-files/clock.box
+    vagrant up
+
+- SSH into machine(vagrant ssh)
+- Run,
+    
+    sudo salt-call state.highstate
+
+  this will install all the development dependencies onto your
+  local system. Now run,
+    
+    activate-virtualenv
+    cd CLOCK
+    ./manage.py runserver 0.0.0.0:8080
+
+- Access the site at the url:
+    
+    http://clock.local:8080/

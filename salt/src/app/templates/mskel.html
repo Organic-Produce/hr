@@ -1,0 +1,20 @@
+{% load compress %} <!DOCTYPE html>
+<html lang="en">
+    <!-- Bootstrap core CSS -->
+    {% compress css %}
+    <link href="/static/css/main.scss" type="text/scss" rel="stylesheet">
+    <link href="/static/css/jquery-ui.css" type="text/scss" rel="stylesheet">
+    <link href="/static/css/bootstrap-datetimepicker.min.css" type="text/scss" rel="stylesheet">
+    {% endcompress %}
+         <script src="/static/js/jquery-1.11.1.min.js"></script>
+         <script src="/static/js/bootstrap.min.js"></script>
+<script type='text/javascript'>
+$(window).load(function(){
+$('a.extra').on('click', function(e) {
+    var src = $(this).attr('href');
+    var height = $(this).attr('data-height') || 45;
+    $("#frmModal iframe").attr({'src':src, 'height':height });
+});
+});
+</script> {% block main %} {% endblock %}
+</html>

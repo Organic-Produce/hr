@@ -1,0 +1,46 @@
+[
+    {
+        "pk": 1,
+        "model": "profiles.profile",
+        "fields": {
+            "username": "admin",
+            "pay_type": 1,
+            "first_name": "",
+            "last_name": "",
+            "employment_type": 1,
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2014-03-05T06:37:48.317Z",
+            "groups": [],
+            "user_permissions": [],
+            "employees": [
+                4
+            ],
+            "password": "pbkdf2_sha256$12000$ngTXzzmJqcyg$xYR8cgKbRsI5TIQoWGWqPl3kEaOROYMVqeeh/KlBG/Q=",
+            "email": "admin@admin.com",
+            "date_joined": "2014-03-05T06:37:37.924Z"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "profiles.profile",
+        "fields": {
+            "username": "test",
+            "pay_type": 1,
+            "first_name": "Me",
+            "last_name": "Last",
+            "employment_type": 1,
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2014-03-05T00:00:00Z",
+            "groups": [],
+            "user_permissions": [],
+            "employees": [],
+            "password": "pbkdf2_sha256$12000$ngTXzzmJqcyg$xYR8cgKbRsI5TIQoWGWqPl3kEaOROYMVqeeh/KlBG/Q=",
+            "email": "test@test.com",
+            "date_joined": "2014-03-05T00:00:00Z"
+        }
+    }
+]

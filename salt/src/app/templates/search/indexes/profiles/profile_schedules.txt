@@ -1,0 +1,10 @@
+{% for schedule in object.schedules %}
+    [
+    {% for entry in schedule.entries.iterator %}
+        entry_{ weekdays: {{ entry.weekdays }},
+            start: {{ entry.start.isoformat }},
+            end : {{ entry.end.isoformat }}
+            }
+    {% endfor %}
+    ]
+{% endfor %}

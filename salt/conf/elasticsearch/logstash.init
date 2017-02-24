@@ -1,0 +1,21 @@
+# logstash - indexer instance
+#
+
+description     "logstash indexer instance"
+
+start on virtual-filesystems
+stop on runlevel [06]
+
+respawn
+respawn limit 5 30
+
+#env JAVA_OPTS='-Xms512m -Xmx512m'
+chdir /home/logstash
+env HOME='/home/logstash'
+setuid logstash
+setgid logstash
+console log
+
+script
+  exec java -jar /usr/share/logstash/logstash-latest-monolithic.jar agent -f /etc/logstash/logstash.conf --log /home/logstash/log/agent.out
+end script

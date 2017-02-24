@@ -1,0 +1,5 @@
+description "Clockwork - Web server"
+start on runlevel [2345]
+stop on runlevel [06]
+
+exec uwsgi --die-on-term --emperor {{ pillar['directories']['vassals'] }} --uid=www-data --gid=www-data 

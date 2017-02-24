@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load dicgetatt %}
+{% load tz %}
+{% load i18n %}
+
+{% block main %}
+<h3><span class="glyphicon glyphicon-user"></span>  {{ request.user.get_full_name }}</h3>
+<label>Client:</label> {{ client }}
+{% if form.errors %}
+<h4>
+{% if form.non_field_errors %}{{ form.non_field_errors }}{% else %}
+You must make a selection{% endif %}</h4>
+<button onclick="goBack()">Go Back</button>
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+{% else %}
+<form class="form-horizontal login" method="post" action="{{ action }}">
+
+{% if hide %}
+{{ hide.value }}
+<input id="id_{{element}}" name="{{element}}" type="hidden" value="{{ hide.key }}" />
+{% if hide.value == "Returning" %} with an issue started {{ pending.start|stripdecimal|timezone:"America/Chicago" }}
+{% if pending.note %}<hr>and note:<hr>{{ pending.note }} {% endif %}
+{% endif %}
+{% else %}
+<div class="form-group">
+{% if effect == "Finish" %}
+<h3> {% trans "Was the Tax completed?" %}</h3>
+{% else %}
+<h3> {% trans "Please select" %}</h3>
+{% endif %}
+{% for option in options %}
+<li><label for="id_{{element}}_{{forloop.counter0}}"><input id="id_{{element}}_{{forloop.counter0}}" name="{{element}}" type="radio" value="{{ option.key }}" /> {{ option.value }}</label>
+{% if effect == "Finish" and forloop.counter0 == 0 %}
+<ul>
+<li><label for="id_fees">Fees:</label><input id="id_fees" name="fees" step="any" type="number" value="0.00"/></li>
+<li><label for="id_tax_state">Estimated tax federal return:</label><input id="id_tax_federal" name="tax_federal" step="any" type="number" value="0.00"/></li>
+<li><label for="id_tax_federal">Estimated tax state return:</label><input id="id_tax_state" name="tax_state" step="any" type="number" value="0.00"/></li>
+</ul>
+{% endif %}{% endfor %}{% endif %}
+<input id="id_client_id" name="client_id" type="hidden" value="{{ client_id }}" />
+</div>
+{% if effect == "Finish" %}
+<div class="form-group">
+<hr />
+<li><label for="id_phone">Telephone Number:</label><input id="id_phone" name="phone" type="text" /></li>
+<li>{{ form.note.label }}<hr />{{ form.note }}</li>
+</div>
+<input id="id_ID" name="ID" type="hidden" value="{{ ID }}" />
+{% endif %}
+
+            <hr />
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                    {% csrf_token %}
+                    <button class="btn btn-default btn-lg btn-{% if effect == "Start" %}success{% elif effect == "Finish" %}danger{% else %}primary{% endif %}" type="submit" value={{ effect }}>
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        <span>{{ effect }}</span>
+                    </button>
+                </div>
+            </div>
+{% endif %}
+</form>
+{% endblock %}

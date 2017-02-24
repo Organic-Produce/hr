@@ -1,0 +1,10 @@
+Dear applicant,
+
+Your access to HRpower hiring system at {{ site }} needs to be activated by following the link:
+
+https://register.hrpower.com/register/applicant/activate/{{activation_key}}/
+
+Please note that this will be vaild for {{ expiration_days }} days only.
+
+HRpower team.
+

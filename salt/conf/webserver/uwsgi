@@ -1,0 +1,21 @@
+[uwsgi]
+master = true
+socket = {{ pillar['directories']['socket'] }}
+chmod-socket = 755
+processes = 5
+uid = {{ pillar['main_user'] }}
+gid = www-data
+
+chown-socket = www-data:www-data
+
+chdir = {{ pillar['directories']['src'] }}
+module = {{ pillar['module_app'] }}.wsgi{% if 'pidgei' in grains['id'] %}
+smart-attach-daemon = /tmp/celery.pid /home/clock/env/bin/celery -A app worker  --pidfile=/tmp/celery.pid {% endif %}
+home = {{ pillar['directories']['env'] }}
+logto = /var/log/uwsgi.log
+vacuum = true
+{% if 'shop' in grains['id'] %}
+env = LC_ALL=en_US.UTF-8
+env = LANG=en_US.UTF-8
+env = LC_LANG=en_US.UTF-8
+{% endif %}

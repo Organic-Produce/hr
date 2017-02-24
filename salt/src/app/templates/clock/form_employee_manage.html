@@ -1,0 +1,13 @@
+{% load i18n %}
+<h4><span class="glyphicon glyphicon-user"></span>{% if 'pwd' in request.path %}
+                                          {% trans "Updating" %} {{ employee }} {% else %}{% trans "Manage" %}{% endif %}</h4>
+<hr>
+<div class="panel panel-default">
+<div class="well-row">
+<form action="{{ action }}"  method="POST">
+  {% csrf_token %}
+    {{ form.as_p }}
+  <input type="submit" value={% trans "Save" %} />
+</form>
+</div>
+</div>

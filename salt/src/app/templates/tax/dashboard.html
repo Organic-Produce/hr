@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load dicgetatt %}
+{% load tz %}
+{% load i18n %}
+
+{% block main %}
+    {% if errors %}
+<div class="container">  
+<div class="col-sm-5">  
+<div class="alert alert-danger">  
+  <a class="close" data-dismiss="alert">×</a>  
+  <strong>Warning!</strong><hr />
+  {{ errors }}
+</div>  
+</div>  
+</div>
+    {% endif %}
+<h4><span class="glyphicon glyphicon-dashboard"></span>{{ affiliate }}</h4>
+<hr>
+<div class="well row">
+        <h5><small>{% trans "Waiting" %}</small></h5>
+<div class="list-group">
+    {% for user in waiting %}
+    {% if user.last_time %}
+            <div class="row">
+            {% url 'tax_start' client_id=user.ID as url %}
+                <a class="list-group-item" href="{{ url }}">
+                <h4 class="list-group-item-heading">{{ user.last_name }}, {{ user.first_name }}
+                {% if user.affiliates %}
+                <small>To{% if user.pending %} continue with:{% else %} see:{% endif %}
+                {% for affiliate in user.affiliates %}{{ affiliate.first_name }} {{ affiliate.last_name }}{% if affiliate.django_id == pk %} (you){% endif %}{% endfor %}</small>
+                {% endif %}</h4>
+                <small>Arrived: </small>{{ user.last_time|stripdecimal|timezone:"America/Chicago" }} 
+                </a>
+                <br />
+            </div>
+    {% endif %}
+    {% endfor %}
+</div>
+</div>
+{% endblock %}

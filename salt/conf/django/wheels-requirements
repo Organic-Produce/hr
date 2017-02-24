@@ -1,0 +1,4 @@
+#distribute==0.7.3
+pip==1.4.1
+setuptools==0.8.0
+wheel==0.22.0

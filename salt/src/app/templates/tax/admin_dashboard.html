@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load i18n %}
+
+{% block extrah %}
+         {{ form.media.js }}
+         <script src="/static/js/jquery-ui.js"></script>
+         <script type="text/javascript">
+            window.myobj = {
+                markerOver: function() { this.openInfoWindow(); },
+                markerOut: function() { this.closeInfoWindow(); }
+            };
+         </script>
+         <script>
+            $(function () {
+                $( "#dater" ).datepicker({dateFormat: "yy-mm-dd"});
+            });
+         </script>
+{% endblock %}
+
+{% block main %}
+    {% if errors %}
+<div class="container">  
+<div class="col-sm-5">  
+<div class="alert alert-danger">  
+  <a class="close" data-dismiss="alert">×</a>  
+  <strong>Warning!</strong><hr />
+  {{ errors }}
+</div>  
+</div>  
+</div>
+    {% endif %}
+<h4><span class="glyphicon glyphicon-dashboard"></span>{{ user.first_name }} <small>{{ user.email }}</small></h4>
+<hr>
+<div class="well row">
+    <div class="col-sm-5">
+        <h5><small>{% trans "Overview" %}</small></h5>
+        <div class="list-group">
+            {% url 'tax_list_affiliates' as url %}
+            <a class="list-group-item" href="{{ url }}"><span class="glyphicon glyphicon-user"></span>{% trans "Employees" %} <span class="badge">{{ user.employees.count }}</span></a>
+        </div>
+        <div class="list-group">
+        <h5><small>{% trans "Reports" %}</small></h5>
+        <form action="{% url 'clock_get_report' opt='s' %}" method="get"><small>
+            <div class="form-group row">
+            <div class="col-sm-3">
+                        <button type="text" class="btn btn-default"><i class="glyphicon glyphicon-download"> {% trans "Download" %}</i></button>
+            </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">
+                    <label>{% trans "Including date" %}</label>
+				        <div class="input-group date">
+					        <input type="text" name="d" id="dater" class="form-control" placeholder="YYYY-MM-DD" data-date-format="YYYY-MM-DD"/>
+					        <span class="input-group-addon">
+						        <span class="glyphicon glyphicon-calendar"></span>
+					        </span>
+				        </div>
+                </div>
+            {% if 'pay_period' in user.instances.0.user_configs %}
+                <div class="col-sm-3">
+                    <label>{% trans "Pay Period" %}</label>
+                    <select name="p" class="form-control">
+                        <option value="monthly">{% trans "Monthly" %}</option><option value="biweekly">{% trans "Bi-weekly" %}</option>
+                    </select>
+                </div>
+            {% endif %}
+                <div class="col-sm-4">
+                    <label>{% trans "Format" %}</label>
+                    <select name="f" class="form-control">
+                        <option value="detailed">{% trans "Daily" %}</option><option value="summary">{% trans "Summary" %}</option>
+                    </select>
+                </div>
+            </div>
+        </small></form>
+        </div>
+    </div>
+    <div class="col-sm-6">
+         {{ form.map }}
+    </div>
+</div>
+{% endblock %}

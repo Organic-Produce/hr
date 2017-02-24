@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% block extrah %}
+<script>
+setTimeout("location.href = '{% url 'tax_identify_client'%}';",2500);
+</script>
+{% endblock %}
+{% block main %}
+<h3><span class="glyphicon glyphicon-user"></span>  {{ client.first_name }} {{ client.last_name }}</h3>
+<div class="containder">
+<div class="col-sm-12">
+<div class="alert alert-success">
+<h4>Please take a sit while <i>{{ affiliate }}</i> becomes available.</h4>
+</div>
+</div>
+</div>
+{% endblock %}

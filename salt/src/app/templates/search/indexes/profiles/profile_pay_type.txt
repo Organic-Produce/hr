@@ -1,0 +1,1 @@
+{{ object.get_pay_type_display }}

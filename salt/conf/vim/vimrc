@@ -1,0 +1,179 @@
+" Vundle stuff
+set nocompatible
+filetype off
+
+execute pathogen#infect()
+
+syntax enable
+set background=dark
+colorscheme solarized
+
+
+"Settings
+set backup
+set backupdir=~/.vim/tmp/
+set noswapfile
+set nowrap
+set number
+set t_Co=256
+
+"Sets how many lines of history VIM has to remember
+set history=700
+
+if has("mouse")
+	set mouse=a
+endif
+
+"2 spaces tabs
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+
+set autoindent
+set nocompatible
+set showmatch
+"Do not redraw between macros (speed)
+set lazyredraw
+"No beeps
+set vb t_vb=
+"Highlights search
+set hls
+"Shows line and column number at the bottom
+set ruler
+"Incremental search
+set incsearch
+"Ignore case sensitivity on searches
+set ignorecase
+"Shows that you are typing as command
+set showcmd
+"highlight current line
+"set cul
+if v:version > 700
+	set cursorline
+	hi CursorLine		gui=bold,reverse	cterm=NONE ctermbg=17 guibg=17
+	hi CursorColumn gui=bold,reverse	cterm=NONE ctermbg=17 guibg=17
+endif
+
+"Mappings
+nnoremap ; :
+
+nmap <S-x> :vsp<cr>
+nmap <S-s> :bn<cr>
+nmap <S-a> :bp<cr>
+nmap <S-w> <C-W>w
+
+vmap <C-c> y:call system("pbcopy", getreg("\""))<cr>
+nmap <C-v> :call setreg ("\"", system("pbpaste"))<cr>p
+
+nmap <S-c> :tabnew<cr>
+nmap <S-e> :tabnext<cr>
+nmap <S-q> :tabprev<cr>
+
+nmap <S-z> :u<cr>
+nmap , ^
+nmap . $
+vmap , ^
+vmap . $
+nmap \ o <Esc>
+
+" Nerdtree
+map <S-l> :NERDTreeToggle<cr>
+
+nmap <S-Down> 45j<cr>
+nmap <S-Up> 45k<cr>
+
+set pastetoggle=<f2>
+
+nmap <S-n> :set noet \| :retab! \| :w<cr>
+
+" file highlighting
+au BufNewFile,BufRead *.mustache set filetype=js
+au BufNewFile,BufRead *.less set filetype=less
+au BufRead,BufNewFile *.scss set filetype=scss
+
+""""""""""""""""""""""""""""""
+" => Python section
+""""""""""""""""""""""""""""""
+let python_highlight_all = 1
+au FileType python syn keyword pythonDecorator True None False self
+
+au BufNewFile,BufRead *.jinja set syntax=htmljinja
+au BufNewFile,BufRead *.mako set ft=mako
+
+au FileType python inoremap <buffer> $r return
+au FileType python inoremap <buffer> $i import
+au FileType python inoremap <buffer> $p print
+au FileType python inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
+au FileType python map <buffer> <leader>1 /class
+au FileType python map <buffer> <leader>2 /def
+au FileType python map <buffer> <leader>C ?class
+au FileType python map <buffer> <leader>D ?def
+
+
+"status line stuff
+set ls=2 " Always show status line
+set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%=%-16(\ %l,%c-%v\ %)%P
+
+" :bd fix
+"here is a more exotic version of my original Kwbd script
+"delete the buffer; keep windows; create a scratch buffer if no buffers left
+function s:Kwbd(kwbdStage)
+	if(a:kwbdStage == 1)
+		if(!buflisted(winbufnr(0)))
+			bd!
+			return
+	endif
+	let s:kwbdBufNum = bufnr("%")
+	let s:kwbdWinNum = winnr()
+	windo call s:Kwbd(2)
+	execute s:kwbdWinNum . 'wincmd w'
+	let s:buflistedLeft = 0
+	let s:bufFinalJump = 0
+	let l:nBufs = bufnr("$")
+	let l:i = 1
+	while(l:i <= l:nBufs)
+		if(l:i != s:kwbdBufNum)
+			if(buflisted(l:i))
+				let s:buflistedLeft = s:buflistedLeft + 1
+			else
+				if(bufexists(l:i) && !strlen(bufname(l:i)) && !s:bufFinalJump)
+					let s:bufFinalJump = l:i
+				endif
+			endif
+		endif
+		let l:i = l:i + 1
+	endwhile
+	if(!s:buflistedLeft)
+		if(s:bufFinalJump)
+			windo if(buflisted(winbufnr(0))) | execute "b! " . s:bufFinalJump | endif
+		else
+			enew
+			let l:newBuf = bufnr("%")
+			windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif
+			endif
+			execute s:kwbdWinNum . 'wincmd w'
+		endif
+		if(buflisted(s:kwbdBufNum) || s:kwbdBufNum == bufnr("%"))
+		execute "bd! " . s:kwbdBufNum
+	endif
+	if(!s:buflistedLeft)
+		set buflisted
+		set bufhidden=delete
+		set buftype=nofile
+		setlocal noswapfile
+	endif
+	else
+		if(bufnr("%") == s:kwbdBufNum)
+			let prevbufvar = bufnr("#")
+			if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != s:kwbdBufNum)
+				b #
+			else
+				bn
+			endif
+		endif
+	endif
+endfunction
+
+command! Kwbd call <SID>Kwbd(1)
+nnoremap <silent> <Plug>Kwbd :<C-u>Kwbd<CR>

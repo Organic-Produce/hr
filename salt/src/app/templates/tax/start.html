@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load i18n %}
+
+{% block main %}
+
+    <div class="row"><h3 class="text-center">{% trans "Client Sign-In" %}</h3></div>
+
+    <div class="well">
+        <form class="form-horizontal login" method="post" action="{% url 'tax_identify_client' %}">
+    {% if form.errors %}
+    {{ form.non_field_errors }}
+    {% for field in form %}{% if field.errors %}<b>SSN</b>{{ field.errors }}{% endif %}{% endfor %}
+    {% endif %}
+            <div class="form-group">
+                <label for="id_first_name" class="col-sm-2 control-label"><span class="glyphicon glyphicon-user"></span>{% trans "First name" %}:</label>
+                <div class="col-sm-8">
+                    <input class="form-control" id="id_first_name" maxlength="254" name="first_name" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_last_name" class="col-sm-2 control-label"><span class="glyphicon glyphicon-user"></span>{% trans "Last name" %}:</label>
+                <div class="col-sm-8">
+                    <input class="form-control" id="id_last_name" maxlength="254" name="last_name" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_social_security" class="col-sm-2 control-label"><span class="glyphicon glyphicon-barcode"></span>{% trans "SSN" %}:</label>
+                <div class="col-sm-8">
+                    <input class="form-control" id="id_social_security" name="social_security" placeholder="Last 4-digits of your SSN" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                    {% csrf_token %}
+                    <button class="btn btn-default btn-lg btn-primary" type="submit" value="start">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        <span>{% trans "Start" %}</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

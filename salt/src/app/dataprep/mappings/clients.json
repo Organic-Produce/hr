@@ -1,0 +1,18 @@
+{
+    "mappings": {
+        "client": {
+            "properties": {
+                "ID": { "type": "string", "store": true, "index": "not_analyzed" }, 
+                "first_name": { "type": "string", "store": true, "index": "not_analyzed" },
+                "last_name": { "type": "string", "store": true, "index": "not_analyzed" },
+                "social_security": { "type": "integer" }, 
+                "phone": { "type": "string", "index": "not_analyzed" },
+                "last_time": { "type": "date" },
+                "last_location": { "type": "geo_point" }, 
+                "groups": { "type": "string", "store": true, "index": "not_analyzed" },
+		        "employer": { "type": "integer" },
+                "pending": { "type": "string", "store": true, "index": "not_analyzed" }
+	    }		
+        }
+    }
+}

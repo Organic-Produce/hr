@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% load compress %}
+
+<!DOCTYPE html>
+
+{% block main %}
+{% if "register" in request.get_host %}
+    {% include "profiles/applicant.html" %}
+{% else %}
+    {% include "profiles/clock.html" %}
+{% endif %}
+{% endblock %}

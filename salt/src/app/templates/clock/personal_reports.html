@@ -1,0 +1,24 @@
+{% load i18n %}
+
+{% if request.user.instances.0.personal_report %}
+                <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle btn-sm"><span>{% trans "Extended report" %}</span> <span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right text-left"><small>
+                <li><form action="{% url 'clock_get_report' opt='sx' %}" method="get">
+                        <input name="e" type="hidden" value="{{ profile.pk }}" >
+                        <input name="p" type="hidden" value="{{ profile.pay_period }}" >
+                        <button type="text" class="btn btn-default"><i class="glyphicon glyphicon-download">{% trans "Current" %}</i></button>
+                </form></li>
+                <li><form action="{% url 'clock_get_report' opt='lx' %}" method="get">
+                        <input name="e" type="hidden" value="{{ profile.pk }}" >
+                        <input name="p" type="hidden" value="{{ profile.pay_period }}" >
+                        <button type="text" class="btn btn-default"><i class="glyphicon glyphicon-download">{% trans "Last" %}</i></button>
+                </form></li>
+                <li><form action="{% url 'clock_get_report' opt='px' %}" method="get">
+                        <input name="e" type="hidden" value="{{ profile.pk }}" >
+                        <input name="p" type="hidden" value="{{ profile.pay_period }}" >
+                        <button type="text" class="btn btn-default"><i class="glyphicon glyphicon-download">{% trans "Previous" %}</i></button>
+                </form></li>
+                </ul>
+                </div>
+    {% endif %}

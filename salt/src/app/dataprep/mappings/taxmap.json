@@ -1,0 +1,26 @@
+{
+    "mappings": {
+        "tax_entry": {
+            "properties": {
+                "client_id": { "type": "string", "index": "not_analyzed" },
+                "client": { "type": "string" },
+                "affiliate_id": { "type": "integer", "index": "not_analyzed" },
+                "queue": { "type": "date" },
+                "queue_geo": { "type": "geo_point" }, 
+                "start": { "type": "date" },
+                "start_geo": { "type": "geo_point" }, 
+                "end": { "type": "date" },
+                "end_geo": { "type": "geo_point" }, 
+                "expected": { "type": "integer" },
+                "status": { "type": "integer" },
+                "queued": { "type": "date" },
+                "fees": { "type": "float" },
+                "tax_state": { "type": "float" },
+                "tax_federal": { "type": "float" },
+                "phone": { "type": "string", "index": "not_analyzed" },
+                "note": { "type": "string" },
+                "previous": { "type": "string", "index": "not_analyzed" }
+            }
+        }
+    }
+}

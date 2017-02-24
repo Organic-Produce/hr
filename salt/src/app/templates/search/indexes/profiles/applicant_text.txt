@@ -1,0 +1,10 @@
+{{ object.first_name }},
+{{ object.last_name }},
+{{ object.username }},
+{{ object.social_security }},
+{% for group in object.groups.all %}
+{{ group.name }},
+{% endfor %}
+{% for employer in object.employers.all %}
+{{ employer.get_full_name }},
+{% endfor %}

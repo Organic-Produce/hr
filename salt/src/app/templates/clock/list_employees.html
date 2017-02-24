@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load tz %}
+{% load dicgetatt %}
+{% load i18n %}
+
+{% block extrah %}
+<script type="text/javascript">
+        function resizeIframe(obj)
+    {
+        {
+            obj.style.height = 0;
+        }
+        ;
+        {
+            obj.style.height = 60 + obj.contentWindow.document.body.scrollHeight + 'px';
+        }
+    }
+     </script>
+{% endblock %}
+
+{% block main %}
+<h4><span class="glyphicon glyphicon-user"></span>{% trans "Employees" %}{% if 'pay_period' in request.user.instances.0.user_configs %}: &emsp;<a href="?q=Biweekly">{% trans "Biweekly" %}</a>&emsp; <a href="?q=Monthly">{% trans "Monthly" %}</a>{% endif %}</h4>
+
+<hr>
+<div class="panel panel-default">
+    <div class="panel-heading text-right">
+        <div class="row">
+
+            <div class="col-sm-6">
+                <form action="." method="get">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                    <input class="form-control" placeholder="{% trans "Last name, first name, username, or email" %}" type="text" name="q">
+                </div>
+                </form>
+            </div>
+
+            <div class="col-xs-6 col-sm-5">
+                {% if page.has_previous %}
+                <span class="btn-group">
+                    {% if 'q=Biweekly' in request.GET.urlencode %}
+                    <a href="?q=Biweekly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}&q=Biweekly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                    {% elif 'r=Monthly' in request.GET.urlencode %}
+                    <a href="?q=Monthly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}&q=Monthly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                    {% elif 'r=inactive' in request.GET.urlencode %}
+                    <a href="?r=inactive" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}&r=inactive" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                    {% else %}
+                    <a href="?page=1" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                    {% endif %}
+                </span>
+                {% endif %}
+                <small class="badge">{{ page.number }} / {{ page.paginator.num_pages }}</small>
+                {% if page.has_next %}
+                <span class="btn-group">
+                    {% if 'q=Biweekly' in request.GET.urlencode %}
+                    <a href="?page={{ page.next_page_number }}&q=Biweekly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}&q=Biweekly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                    {% elif 'r=Monthly' in request.GET.urlencode %}
+                    <a href="?page={{ page.next_page_number }}&q=Monthly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}&q=Monthly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                    {% elif 'r=inactive' in request.GET.urlencode %}
+                    <a href="?page={{ page.next_page_number }}&r=inactive" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}&r=inactive" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                    {% else %}
+                    <a href="?page={{ page.next_page_number }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                    {% endif %}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+            <div class="row">
+            {% if request.user.instances.0.multi_manager and request.user.instances.0.admin !=  request.user %}
+                {% if request.user.instances.0.iframes %}
+                    <a class="btn btn-primary" data-toggle="modal" href="manage" data-target="#lstModal"><span>{% trans "Manage Employee" %}</span></a>
+		{% else %}
+                    <a class="btn btn-primary" href="manage"><span>{% trans "Manage Employee" %}</span></a>
+                {% endif %}
+            {% else %}
+                <a class="btn btn-primary" href="./?r=inactive"><span>{% trans "Inactive Employees" %}</span></a>
+                {% if request.user.instances.0.multi_manager %}
+                <a class="btn btn-primary" href="{% url 'clock_get_report' opt='u' %}"><span>{% trans "Download Employee List" %}</span></a>
+                {% endif %}
+            {% endif %}
+                <a class="btn btn-primary" href="add"><span class="glyphicon glyphicon-plus"></span><span>{% trans "Add Employee" %}</span></a>
+		{% if request.user.instances.0.memos %}
+		<a class="btn btn-primary" href={% url 'clock_edit_writeup' pk=1 opt='m' %}><span class="glyphicon glyphicon-paperclip"></span><span>{% trans "New memorandum" %}</span></a>
+		{% endif %}
+            </div>
+</div>
+
+{% if request.user.instances.0.iframes %}
+<div class="well row">    
+<div class="col-sm-3">
+{% endif %}
+<div class="list-group">    
+    {% for user in page.object_list %}
+            <div class="row">
+            {% url 'clock_form_employee' pk=user.pk as url %}
+            {% if request.user.instances.0.iframes %}
+                <a class="list-group-item" target="iframe_a" href={{ url }}>
+            {% else %}
+              {% if not forloop.first or not forloop.last %}
+                {% with list=page.object_list|getpklist item=forloop.counter|stringformat:"s" %}
+                <a class="list-group-item" href={{ url|add:"?l="|add:list|add:"&i="|add:item }}>
+                {% endwith %}
+              {% else %}
+                <a class="list-group-item" href={{ url }}>
+              {% endif %}
+            {% endif %}
+                <h4 class="list-group-item-heading">{{ user.last_name }}, {{ user.first_name }} <small>&emsp;{{ user.username }}&emsp;{{ user.email }}</small></h4>
+            {% if user.object.is_active %}
+                <p>{{ user.employment_type }} - {{ user.pay_type }}
+                <br>
+              {% if request.user.instances.0.iframes %}{{ user.pay_period }} - {{ user.geo_radius }}{% endif %}
+              {% if user.last_time %}
+                <br>
+                <small>{% trans "Last seen" %}: &emsp; {{ user.last_time|timezone:"America/Chicago" }}</small>
+              {% endif %}
+                </p>
+            {% else %}<span class="text-danger"> {% trans "INACTIVE" %}</span>
+            {% endif %}
+                </a>
+                <br />
+            </div>
+    {% endfor %}
+</div>
+{% if request.user.instances.0.iframes %}
+</div>
+<div class="col-sm-9">    
+<iframe width="100%" height="100%" src="/static/select.html" name="iframe_a" frameborder="0" onload='javascript:resizeIframe(this);'>
+</iframe>
+</div>
+</div>
+        <div id="lstModal" class="modal fade" tabindex="-1" role="dialog">
+	        <div class="modal-header"> <button type="button" class="close" data-dismiss="modal">×</button> </div>
+	        <div class="modal-content"> </div>
+	        <div class="modal-footer"> <button class="btn" data-dismiss="modal">{% trans "Close" %}</button> </div>
+        </div>
+    {% endif %}
+{% endblock %}
+

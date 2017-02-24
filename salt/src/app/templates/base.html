@@ -1,0 +1,156 @@
+{% load compress %}
+{% load i18n %}
+
+<!DOCTYPE text/html>
+<html lang="en">
+<link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Clock</title>
+
+    <!-- Bootstrap core CSS -->
+    {% compress css %}
+    <link href="/static/css/main.scss" type="text/scss" rel="stylesheet">
+    <link href="/static/css/jquery-ui.css" type="text/scss" rel="stylesheet">
+    <link href="/static/css/bootstrap-datetimepicker.min.css" type="text/scss" rel="stylesheet">
+    {% endcompress %}
+    {% block head %}
+         <script src="/static/js/jquery-1.11.1.min.js"></script>
+         <script src="/static/js/bootstrap.min.js"></script>
+    {% endblock %}
+              <script>
+                  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                  ga('require', 'displayfeatures');
+              {% if request.user.instances.0.name.lower in request.get_host %}
+                  ga('create', '{{ request.user.instances.0.ganlytics_code }}', 'auto');
+              {% else %}
+                  ga('create', 'UA-53621908-1', 'auto');
+              {% endif %}
+                  ga('send', 'pageview');
+              </script>
+        {% block extrah %}
+        {% endblock %}
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="nav">
+        <div class="container">
+        <button class="navbar-toggle" data-target=".navbar-responsive-collapse" data-toggle="collapse" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://www.hrpower.com"><IMG STYLE="position:relative; TOP:-14px;" SRC="/static/HR_power_small.png" ALT="HRPower" WIDTH=116 HEIGHT=49></a>
+            </div>
+            <div class="collapse navbar-collapse navbar-responsive-collapse">
+                {% if user.is_authenticated %}
+                <ul class="nav navbar-nav">
+                {% if "Console" in user.groups.first.name %}
+                    {% url 'tax_identify_client' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}>
+                    <a href="{{ url }}"><span class="glyphicon glyphicon-dashboard"></span>{% trans "Console" %}
+                    </a></li>
+                {% elif "Tax Manager" in user.groups.last.name %}
+                    {% url 'tax_home' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}>
+                    <a href="{{ url }}"><span class="glyphicon glyphicon-dashboard"></span>{% trans "Dashboard" %}</a></li>
+                    {% url 'tax_list_affiliates' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}>
+                    <a href="{{ url }}"><span class="glyphicon glyphicon-user"></span>{% trans "Employees" %}</a></li>
+                {% elif "Manager" in user.groups.first.name %}
+                    {% url 'clock_dashboard' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}>
+                    <a href="{{ url }}"><span class="glyphicon glyphicon-dashboard"></span>{% trans "Dashboard" %}</a></li>
+                    {% comment %}
+                    {% url 'clock_list_sites' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}>
+                    <a href="{{ url }}"><span class="glyphicon glyphicon-list-alt"></span>{% trans "Sites" %}</a></li>
+                    {% endcomment %}
+                    {% url 'clock_list_employees' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}>
+                    <a href="{{ url }}"><span class="glyphicon glyphicon-user"></span>{% trans "Employees" %}</a></li>
+                {% if "Reclutant" == user.groups.all.1.name %}
+                    {% url 'register_dashboard' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}>
+                    <a href="{{ url }}"><span class="glyphicon glyphicon-list-alt"></span>{% trans "Applications" %}</a></li>
+                {% endif %}
+                {% elif user.groups.all %}
+                    {% url 'webapp_dashboard' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}>
+                    <a href="{{ url }}"><span class="glyphicon glyphicon-dashboard">
+                    {% if "Affiliate" in user.groups.first.name %}
+                    </span>{% trans "Console" %}
+                    {% else %}
+                    </span>{% trans "Clock" %}{% if status.status == 3 or status.status == 11 or status.status == 12 or status.status == 13 %}{% trans "in" %}{% elif status.status == 2 or status.status == 10 %}{% trans "out" %}{% endif %}
+                    {% endif %}
+                    </a></li>
+                    {% if request.user.instances.0.manager_messages %}
+                    <li><a href="/?i=text"><span class="glyphicon glyphicon-list"></span>{% trans "Messages" %}</a></li>
+                    {% endif %}
+                    {% url 'clock_list_entries' opt='' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}><a href="{{ url }}"><span class="glyphicon glyphicon-list-alt"></span>{% trans "History" %}</a></li>
+                {% endif %}
+                </ul>
+                {% if "Manager" in user.groups.first.name %}
+                <ul class="nav navbar-nav navbar-left">
+                    <li><font size="6pt">&emsp; &emsp;</font></li>
+                    <li><font face="georgia" color="#3c95d2" size="6pt">STREAMLINING</font>&emsp;<font face="georgia" color="white" size="6pt">HR</font></li>
+                    <li><font size="6pt">&emsp;</font></li>
+                </ul>
+                {% endif %}
+                <ul class="nav navbar-nav navbar-right">
+                {% if "Affiliate" in user.groups.first.name and status.status == 2 %}
+                    {% url 'webapp_dashboard' as url %}
+                    <li>
+                    <form action="{{ url }}" method="POST"> {% csrf_token %}
+                        <input type="hidden" name="validation" value="{{ status.status }}" />
+                        <input type="hidden" name="ID" value="{{ status.data }}" />
+                        <input type="hidden" name="site_name" value="{{ status.site_name }}" />
+                        <input type="hidden" id="location_geo" name="location_geo" />
+        <input class="btn-group btn-group-justified btn-lg btn-danger" type="submit" value={% trans "Clockout" %} />
+                    </form>
+                    <script type="text/javascript">
+                        var doc = document.getElementById("location_geo");
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(showPosition);
+                        } else { alert('no geolocation');}
+                        function showPosition(position) {
+                            doc.setAttribute("value", position.coords.latitude + "," + position.coords.longitude);	
+                            doc.value = position.coords.latitude + "," + position.coords.longitude;
+                            doc.innerHTML = position.coords.latitude + "," + position.coords.longitude;
+                            if (/Firefox[\/\s](\d+\.\d+)./.test(navigator.appCodeName)) {alert('Browser accuracy: '+position.coords.accuracy);}
+                        }
+                    </script>
+                    </li> {% endif %}
+                    <li><a href="{% url 'profile_logout' %}">{% trans "Logout" %}</a></li>
+                </ul>
+                {% else %}
+                <ul class="nav navbar-nav">
+                    {% comment %}
+                    <li{% if 'register' in request.path %} class="active"{% endif %}><a href="/accounts/applicant/register/"><span class="glyphicon glyphicon-list-alt"></span>{% trans "Registration" %}</a></li>
+                    {% endcomment %}
+                </ul>
+                {% endif %}
+            </div>{# .nav-collapse #}
+        </div>
+    </div>
+
+    <div class="container main">
+        {% block main %}
+        {% endblock %}
+    </div>
+
+    <div id="footer">
+    <div class="container">
+    <p class="text-mutted"><a href="https://hrpower.com/privacy-policy">{% trans "Privacy policy" %}</a>  &  <a href="https://hrpower.com/term-and-conditions">{% trans "terms and conditions" %}</a></p>
+    </div></div>
+  </body>
+</html>

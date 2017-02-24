@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load compress %}
+
+{% block main %}
+<div class="container">
+<div class="col-sm-5">
+<div class="alert alert-danger">
+There has been a problem activating your access to HRpower applicant system, please verify if your access is already active, otherwise please contact technical
+support at <b>ramon@hrpower.com</b>, using the same e-mail account where you received this link and the following data: <b>{{ activation_key }}</b>
+</div>
+</div>
+</div>
+{% endblock %}

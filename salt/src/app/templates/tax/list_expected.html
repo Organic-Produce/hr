@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load tz %}
+{% load dicgetatt %}
+{% load i18n %}
+
+{% block main %}
+<h4><span class="glyphicon glyphicon-user"></span>{% trans "Expected clients for" %} {{ request.GET.af_name }}</h4>
+
+<hr>
+<div class="panel panel-default">
+    <div class="panel-heading text-right">
+        <div class="row">
+
+            <div class="col-sm-6">
+                <form action="." method="get">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                    <input class="form-control" placeholder="{% trans "Last name, first name" %}" type="text" name="q">
+                </div>
+                </form>
+            </div>
+
+            <div class="col-xs-6 col-sm-5">
+                {% if page.has_previous %}
+                <span class="btn-group">
+                    {% if 'q=Biweekly' in request.GET.urlencode %}
+                    <a href="?q=Biweekly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}&q=Biweekly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                    {% elif 'r=Monthly' in request.GET.urlencode %}
+                    <a href="?q=Monthly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}&q=Monthly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                    {% elif 'r=inactive' in request.GET.urlencode %}
+                    <a href="?r=inactive" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}&r=inactive" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                    {% else %}
+                    <a href="?page=1" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-backward"></span></a>
+                    <a href="?page={{ page.previous_page_number }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></a>
+                    {% endif %}
+                </span>
+                {% endif %}
+                <small class="badge">{{ page.number }} / {{ page.paginator.num_pages }}</small>
+                {% if page.has_next %}
+                <span class="btn-group">
+                    {% if 'q=Biweekly' in request.GET.urlencode %}
+                    <a href="?page={{ page.next_page_number }}&q=Biweekly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}&q=Biweekly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                    {% elif 'r=Monthly' in request.GET.urlencode %}
+                    <a href="?page={{ page.next_page_number }}&q=Monthly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}&q=Monthly" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                    {% elif 'r=inactive' in request.GET.urlencode %}
+                    <a href="?page={{ page.next_page_number }}&r=inactive" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}&r=inactive" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                    {% else %}
+                    <a href="?page={{ page.next_page_number }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></a>
+                    <a href="?page={{ page.paginator.num_pages }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-fast-forward"></span></a>
+                    {% endif %}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+            <div class="row">
+                <a class="btn btn-primary" href={% url 'tax_create_expected' affiliate=request.GET.affiliate %}>
+                    <span class="glyphicon glyphicon-plus"></span><span>{% trans "Client" %}</span></a>
+            </div>
+</div>
+
+<div class="list-group">    
+    {% for user in page.object_list %}
+            <div class="row">
+                <h4 class="list-group-item-heading">{{ user.last_name }}, {{ user.first_name }} <small>&emsp;{{ user.phone }}</small></h4>
+                <br />
+            </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
