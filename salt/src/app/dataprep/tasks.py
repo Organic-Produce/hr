@@ -131,7 +131,7 @@ def end_entry(serializer, doc, date_string, period):
 
     user_id = doc['user_id']
 
-    if not doc['location_id'] and site_name != 'Unknown':
+    if not doc['location_id'] and site_name and site_name != 'Unknown':
         term = '{"term":{"name": "%s"}}' % site_name.lower()
         query = '{"query": {"filtered":{"filter": %s }}}' % term
         site = es.search(index='search', body=query)

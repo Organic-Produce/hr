@@ -9,7 +9,7 @@ gid = www-data
 chown-socket = www-data:www-data
 
 chdir = {{ pillar['directories']['src'] }}
-module = {{ pillar['module_app'] }}.wsgi{% if 'pidgei' in grains['id'] %}
+module = {{ pillar['module_app'] }}.wsgi{% if 'pidgei' in grains['id'] or 'local' in grains['id'] %}
 smart-attach-daemon = /tmp/celery.pid /home/clock/env/bin/celery -A app worker  --pidfile=/tmp/celery.pid {% endif %}
 home = {{ pillar['directories']['env'] }}
 logto = /var/log/uwsgi.log

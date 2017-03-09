@@ -21,30 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'rpc0*u2&b7)==0ar8#q(jqob9vhh!7u#rj2rv9e#fza_(#f8r='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = {% if grains['id'] == 'clock-internals.local' %}True
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ADMINS = (('Ramon', 'ramon@hrpower.com'),)
-
-MANAGERS =  (('Ramon', 'ramon@hrpower.com'),)
-
 DEFAULT_FROM_EMAIL = 'ramon@hrpower.com'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend' #'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'mail.hrpower.com'
-EMAIL_HOST_USER = 'ramon@hrpower.com'
-EMAIL_HOST_PASSWORD = '123456'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-SERVER_EMAIL = 'ramon@hrpower.com'{% else %}False
-
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/tmp/clock-messages'{% endif %}
-
-EMAIL_SUBJECT_PREFIX = '[HR Power] '
+EMAIL_FILE_PATH = '/tmp/clock-messages'
 
 IGNORABLE_404_URLS = (
     re.compile(r'^/apple-touch-icon.*\.png$'),
@@ -55,6 +40,7 @@ IGNORABLE_404_URLS = (
 ALLOWED_HOSTS = [
     '.hrpower.com', # Allow domain and subdomains
     '.hrpower.com.', # Also allow FQDN and subdomains
+    '*'
         ]
 
 
@@ -79,23 +65,20 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'djcelery',
     'BruteBuster',
-    'select_multiple_field',{% if grains['id'] == 'clock-internals.locall' %}
-#    'django_extensions',
-    'registration', {% endif %}
+    'select_multiple_field',  
+    'registration', 
 
     # first-party
     'profiles', 
-    'clock',{% if 'squirtle' or 'local' in grains['id'] %}
-    'dataprep', {% endif %} {% if 'cucaracha' in grains['id'] %}
-    'tax', {% endif %} {% if grains['id'] == 'clock-internals.local' %}
-    'register', {% endif %}
+    'clock',
+    'dataprep',   
+    'register', 
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.common.BrokenLinkEmailsMiddleware', {% if grains['id'] == 'clock-internals.locall' %}
-    'debug_toolbar.middleware.DebugToolbarMiddleware',{% endif %}
+    'django.middleware.common.BrokenLinkEmailsMiddleware', 
     'django.middleware.csrf.CsrfViewMiddleware',
     'BruteBuster.middleware.RequestMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -108,58 +91,33 @@ ROOT_URLCONF = 'app.urls'
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-BROKER_URL = 'amqp://{{ pillar['rabbit']['user'] }}:{{ pillar['rabbit']['password'] }}@{{ pillar['rabbit']['host'] }}:{{ pillar['rabbit']['port'] }}//'
+BROKER_URL = 'amqp://clock:clock@localhost:5672//'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': '{{ pillar['database']['engine'] }}',
-        'NAME': '{{ pillar['database']['name'] }}',
-        'USER': '{{ pillar['database']['user'] }}',
-        'PASSWORD': '{{ pillar['database']['password'] }}',
-        'HOST': '{{ pillar['database']['host'] }}',
-        'PORT': '{{ pillar['database']['port'] }}',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'clock',
+        'USER': 'clock_data',
+        'PASSWORD': 'clock',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': '{{ pillar['elasticsearch']['engine'] }}',
-        'URL': '{{ pillar['elasticsearch']['url'] }}',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://localhost:9200/',
         'INDEX_NAME': 'search',
     }
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-{% if grains['id'] == 'clock-internals.local' %}HAYSTACK_SEARCH_RESULTS_PER_PAGE=3{% endif %}
-{% if grains['id'] == 'clock-internals.locall' %}
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TEMPLATE_CONTEXT': True,
-} 
-INTERNAL_IPS = ('127.0.0.1','172.31.44.223','54.68.173.71')
-DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False,}
-def show_toolbar(request):
-    return True
-SHOW_TOOLBAR_CALLBACK = show_toolbar
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-    'haystack_panel.panel.HaystackDebugPanel',
-]
-{% endif %}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE=3
+
 REST_FRAMEWORK = {
     #'DEFAULT_MODEL_SERIALIZER_CLASS': 'rest_framework.serializers.HyperlinkedModelSerializer',
     #'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',]
@@ -175,7 +133,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
 )
 
-ELASTICSEARCH_HOST = '{{ pillar['elasticsearch']['host'] }}'
+ELASTICSEARCH_HOST = 'localhost'
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
@@ -230,5 +188,4 @@ COMPRESS_PRECOMPILERS = (
 )
 
 COMPRESS_ROOT = '%s/static/' % BASE_DIR
-
 

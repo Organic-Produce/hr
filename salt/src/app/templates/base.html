@@ -134,9 +134,8 @@
                 </ul>
                 {% else %}
                 <ul class="nav navbar-nav">
-                    {% comment %}
-                    <li{% if 'register' in request.path %} class="active"{% endif %}><a href="/accounts/applicant/register/"><span class="glyphicon glyphicon-list-alt"></span>{% trans "Registration" %}</a></li>
-                    {% endcomment %}
+					{% url 'register_create_applicant' as url %}
+                    <li{% if url == request.path %} class="active"{% endif %}><a href={{ url }}><span class="glyphicon glyphicon-list-alt"></span>{% trans "Applicants" %}</a></li>
                 </ul>
                 {% endif %}
             </div>{# .nav-collapse #}

@@ -35,7 +35,7 @@ def dashboard(request):
             return reverse('register_detail_applicant', kwargs={'pk': request.user.pk})
 
 class CreateApplicantView(RegistrationView):
-    template_name = 'profiles/login.html'
+    template_name = 'registration/login.html'
     form_class = Authentication
 
     def post(self, request):
@@ -50,7 +50,7 @@ class CreateApplicantView(RegistrationView):
         elif form.is_valid() :
             username = cleaned_data["username"]
             password = cleaned_data["password"]
-            applicant = Applicant.objects.create_user(username=username, password=password, email=username)
+            applicant = Applicant.objects.create_user(username=username, password=password, email=username, social_security=" ")
             applicant.is_active = False
             applicant.save()
             profile = RegistrationProfile.objects.create_profile(applicant)
@@ -110,11 +110,11 @@ class DetailApplicantListView(UpdateView):
         applicant = self.get_object()
         list = {'telephones': applicant.telephones.all(), 'job': applicant.worked.all(), 'education': applicant.education.all(), 'document': applicant.documentation.all() }
         name = self.kwargs['ls']
-	if name == 'all' :
-		context['applicant'] = list
-	else :
-		context['list'] = list[name]
-		context['name'] = name
+        if name == 'all' :
+		    context['applicant'] = list
+        else :
+		    context['applicant'] = list[name]
+        context['name'] = name
         return  context
 
     @method_decorator(login_required)
@@ -141,6 +141,7 @@ class DetailTelephoneView(UpdateView):
 class AddTelephoneView(CreateView):
     model = Telephone_number
     fields = ['number','type']
+    template_name= 'registration/telephone_number_form.html'
 
     def get_success_url(self) :
         return reverse('register_form_success')

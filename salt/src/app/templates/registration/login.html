@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 
 {% block main %}
-{% if "register" in request.get_host %}
+{% if "localhost" in request.get_host %}
     {% include "profiles/applicant.html" %}
 {% else %}
     {% include "profiles/clock.html" %}

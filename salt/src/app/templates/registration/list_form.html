@@ -1,6 +1,10 @@
 {% extends 'mskel.html' %}
 {% load dicgetatt %}
-{% block main %} {% if list %} {% for element in list %}
+{% block main %} {% if 'all' != name %}
+                    <div class="form-actions">
+                       <a class="btn btn-sm btn-info extra" head="{{name|capfirst}}" data-toggle="modal" href="{% url 'register_add_'|add:name ap=request.user.id %}" data-target="#frmModal" >Add new</a>
+                    </div>
+{% for element in applicant %}
             <div class="container-fluid"> {% if element.number %}
                     <div class="col-sm-1 col-xs-2"> {{ element.number }} </div>
                     <div class="col-sm-1 col-xs-2"> {{ element.get_type_display }} </div>
@@ -20,9 +24,6 @@
                     </div>
             </div>
                     {% endfor %}
-                    <div class="form-actions">
-                        <a class="btn btn-sm btn-info extra" head="{{name|capfirst}}" data-toggle="modal" href="{% url 'register_add_'|add:name ap=request.user.id %}" data-target="#frmModal" >Add new</a>
-                    </div>
 		    {% else %}
 <div class="well row">
     <div class="col-sm-5">
@@ -36,16 +37,14 @@
 		    {% endif %}
 		    {% endif %}
                     {% endfor %}
-                    {% endif %}
                     </div>
         </div>
     </div>
     <div class="col-sm-6">
-{% for name in applicant %}
-<div class="panel panel-default">
-<div class="panel-heading"><h4>{{ name }}</h4></div>
-<div class="panel-body">
-{% for element in applicant|getatt:name %}
+{% for detail in applicant %}
+      <div class="panel panel-default">
+      <div class="panel-heading"><h4>{{ detail }}</h4></div>
+{% for element in applicant|getatt:detail %}
             <div class="container-fluid"> {% if element.number %}
                     <div class="col-sm-1 col-xs-2"> {{ element.number }} </div>
                     <div class="col-sm-1 col-xs-2"> {{ element.get_type_display }} </div>
@@ -59,10 +58,9 @@
                       {% endif %}
             </div>
 {% endfor %}
-</div>
     </div>
 {% endfor %}
-</div>
+                    {% endif %}
 
 
         <div id="frmModal" class="modal fade" tabindex="-1" role="dialog" data-color="green" aria-hidden="true">
