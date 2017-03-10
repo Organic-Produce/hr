@@ -50,8 +50,9 @@ Last login: Sun Mar  5 23:58:06 2017 from 10.0.2.2
 ------------------------------------------------------------
 ~CLOCK(branch:a7d4bdd*) » activate-virtualenv                       clock@clock
 ------------------------------------------------------------
-~CLOCK(branch:a7d4bdd*) » ./manage.py create_index -m dataprep/mappings/entry.json
+~CLOCK(branch:a7d4bdd*) » python manage.py create_index -m dataprep/mappings/entry.json
 No handlers could be found for logger "elasticsearch"
 ------------------------------------------------------------
 ~CLOCK(branch:a7d4bdd*) »                                           clock@clock
+~CLOCK(branch:a7d4bdd*) » sudo service uwsgi restart
 </pre>
