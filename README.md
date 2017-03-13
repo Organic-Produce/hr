@@ -18,6 +18,9 @@
 	    - for admin: 
 	        - username: clock
 	        - passwd: clock
+	- **django admin**: http://localhost:8080/plumbing/
+        - username: clock
+        - passwd: clock
     - **Elasticsearch**: http://localhost:9209/_plugin/head/
     - **database**: *postgressql*
         - name: clock
