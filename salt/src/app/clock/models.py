@@ -125,3 +125,8 @@ class ScheduleEntry(models.Model):
     weekdays = models.PositiveIntegerField(choices=WEEKDAY_CHOICES, default=0)
 
     schedule = models.ForeignKey(Schedule, related_name='entries')
+
+class Task(models.Model):
+    id = models.AutoField(primary_key=True)
+    description = models.CharField(max_length=512, default='')
+    worker = models.ForeignKey('profiles.Profile')

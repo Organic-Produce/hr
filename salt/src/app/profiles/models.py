@@ -205,5 +205,7 @@ class Applicant(Profile):
     resume = models.FileField(upload_to=".", null=True, blank=True)
     status = models.IntegerField(max_length=2, choices=STATUSES, default=1, editable=False)
     note = models.CharField(max_length=512, null=True, blank=True, editable=False)
+    available_by = models.DateField(null = True)
+
     def __unicode__(self): return self.username
 
