@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^user/fence/$', 'dataprep.views.fence'),
     url(r'^user/token/', 'rest_framework.authtoken.views.obtain_auth_token' ),
     url(r'^user/setup/(?P<location_geo>\-?\d{0,3}\.?\d{0,15},?\-?\d{0,3}\.?\d{0,15})$', 'dataprep.views.setup'),
+    url(r'^user/changepassword/$', 'dataprep.views.changepassword'),
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns)

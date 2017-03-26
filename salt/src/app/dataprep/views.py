@@ -3,7 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from dataprep.serializers import (ClockinSerializer, ClockoutSerializer, ValidateSerializer,
     StatusSerializer, ClockedinSerializer, HistentrySerializer, HistorySerializer, AlertSerializer,
-    SiteinfoSerializer, WriteupSerializer, SetupSerializer, WithinSerializer, FenceSerializer, MessageSerializer)
+    SiteinfoSerializer, WriteupSerializer, SetupSerializer, WithinSerializer, FenceSerializer, MessageSerializer, 
+    ChangepasswordSerializer)
 from dataprep.tasks import insert_entry, end_entry, edit_entry, edit_profile, round_time, insert_alert
 from rest_framework.parsers import JSONParser
 from django.shortcuts import redirect
@@ -44,6 +45,29 @@ def setup(request, location_geo):
             return Response(response.data)
 
         return Response('Not authenticated', status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['PUT'])
+def changepassword(request):
+    if request.method == 'PUT':
+
+        if not request.auth:
+            return Response('Not authenticated', status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = ChangepasswordSerializer(data=request.DATA)
+
+        if serializer.is_valid() and request.auth:
+            user_id = request.user.pk
+            from profiles.models import Profile
+            employee = Profile.objects.get(pk=user_id)
+
+            if employee.check_password(serializer.data.get('password')):
+                employee.set_password(serializer.data.get('new_password'))
+                employee.save()
+                
+                resp = StatusSerializer({'status': 1})
+                return Response(resp.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 def checkin(request):

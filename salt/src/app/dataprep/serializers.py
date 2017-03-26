@@ -32,6 +32,10 @@ class MessageSerializer(serializers.Serializer):
     location_id = serializers.IntegerField(required=False)
     text = serializers.CharField()
 
+class ChangepasswordSerializer(serializers.Serializer):
+    password = serializers.CharField()
+    new_password = serializers.CharField()
+
 # RESPONSES
 class SetupSerializer(serializers.Serializer):
     geo_frecuency = serializers.IntegerField()
