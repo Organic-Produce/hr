@@ -1,8 +1,9 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "clock"
+  config.vm.box = "hrpower"
+  config.vm.box_url = "https://s3-us-west-2.amazonaws.com/clockwork-files/hrpower.box"
   config.ssh.username = "clock"
 
-  config.vm.hostname = "clock.local"
+  config.vm.hostname = "hrpower.local"
 
   ## For masterless, mount your salt file root
   config.vm.synced_folder ".", "/vagrant", :nfs=>true

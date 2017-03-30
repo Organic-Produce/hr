@@ -2,6 +2,7 @@
 # $GIT_DIR/info/exclude or the core.excludesFile configuration variable as
 # described in https://git-scm.com/docs/gitignore
 
+# Django
 *.egg-info
 *.pot
 *.py[co]
@@ -17,3 +18,9 @@ tests/.coverage
 build/
 tests/report/
 
+# SASS
+.sass-cache/
+*.css.map
+
+# Vagrant
+.vagrant/
